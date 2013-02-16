@@ -47,14 +47,9 @@ public class CreateDungeon : MonoBehaviour
 	{
 		Vector2 rndNeighbor;
 		int rnd;	
-		
-		foreach(Vector2 neigh in candidateNeighbors){
-			Debug.Log("X: " + neigh.x + " Y: " + neigh.y);
-		}
-		
+
 		if(Random.Range(0, 11) >= linearProb && lastInsertedNeighbors.Count > 0){
 			rnd = Random.Range(0, lastInsertedNeighbors.Count);
-			//Debug.Log("Last inserted count: " + lastInsertedNeighbors.Count + " random: " + rnd);
 			rndNeighbor = lastInsertedNeighbors[rnd];
 		} else {
 			rnd = Random.Range(0, candidateNeighbors.Count - lastInsertedNeighbors.Count);
@@ -71,10 +66,8 @@ public class CreateDungeon : MonoBehaviour
 		
 		int nRooms = Random.Range(8, 14);
 		
-		List<Vector2> lastInsertedNeighbors;
-		List<Vector2> candidateNeighbors;
-		
-		candidateNeighbors = new List<Vector2>();
+		List<Vector2> lastInsertedNeighbors = new List<Vector2>();
+		List<Vector2> candidateNeighbors = new List<Vector2>();
 		
 		Vector2 pivot;
 		ConcreteRoom auxRoom = new ConcreteRoom(width/2, height/2, width, height);
@@ -91,7 +84,7 @@ public class CreateDungeon : MonoBehaviour
 				
 		while(nRooms > 0)
 		{
-			pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors);
+			pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors);	
 			auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, height, width);
 			
 			//don't allow duplicate room creation
@@ -104,7 +97,6 @@ public class CreateDungeon : MonoBehaviour
 			createdRooms.Add(auxRoom);
 			lastInsertedNeighbors = updateNeighbors(candidateNeighbors, auxRoom.neighbors);
 			nRooms--;
-			//Debug.Log("Room X: " + auxRoom.x + " Room Y: " + auxRoom.y);
 			map[auxRoom.x, auxRoom.y] = 1;
 		}
 		
