@@ -7,18 +7,16 @@ public class CreateDungeon : MonoBehaviour
 	public int gridWidth;
 	public int gridHeight;
 	public Transform roomPrefab;
+	public float linearProb;
 	
 	
 	private int[,] dungeonMap;
 	private List<ConcreteRoom> createdRooms;
-	private List<Vector2> candidateNeighbors;
 	
 	void Start()
 	{
 		
-		createdRooms = new List<ConcreteRoom>();
-		candidateNeighbors = new List<Vector2>();
-		
+		createdRooms = new List<ConcreteRoom>();		
 				
 		dungeonMap = new int[gridWidth, gridHeight];
 		
@@ -29,24 +27,40 @@ public class CreateDungeon : MonoBehaviour
 		spawnRooms(dungeonMap, roomPrefab);
 	}
 	
-	void updateNeighbors(List<Vector2> newNeighbors)
+	List<Vector2> updateNeighbors(List<Vector2> candidateNeighbors, List<Vector2> newNeighbors)
 	{
+		List<Vector2> insertedNeighbors = new List<Vector2>();
+		
 		foreach(Vector2 neighbor in newNeighbors)
 		{
 			if(!candidateNeighbors.Contains(neighbor))
 			{
 				candidateNeighbors.Add(neighbor);
+				insertedNeighbors.Add(neighbor);
 			}
 		}
+		
+		return insertedNeighbors;
 	}
 	
-	private Vector2 getRandomNeighbor()
+	private Vector2 getRandomNeighbor(List<Vector2> candidateNeighbors, List<Vector2> lastInsertedNeighbors)
 	{
 		Vector2 rndNeighbor;
+		int rnd;	
 		
-		int rnd = Random.Range(0, candidateNeighbors.Count);
+		foreach(Vector2 neigh in candidateNeighbors){
+			Debug.Log("X: " + neigh.x + " Y: " + neigh.y);
+		}
 		
-		rndNeighbor = candidateNeighbors[rnd];
+		if(Random.Range(0, 11) >= linearProb && lastInsertedNeighbors.Count > 0){
+			rnd = Random.Range(0, lastInsertedNeighbors.Count);
+			//Debug.Log("Last inserted count: " + lastInsertedNeighbors.Count + " random: " + rnd);
+			rndNeighbor = lastInsertedNeighbors[rnd];
+		} else {
+			rnd = Random.Range(0, candidateNeighbors.Count - lastInsertedNeighbors.Count);
+			rndNeighbor = candidateNeighbors[rnd];
+		}
+		
 		candidateNeighbors.Remove(rndNeighbor);
 		
 		return rndNeighbor;
@@ -54,7 +68,14 @@ public class CreateDungeon : MonoBehaviour
 	
 	private void generateDungeon(ref int[,] map, int width, int height)
 	{
+		
 		int nRooms = Random.Range(8, 14);
+		
+		List<Vector2> lastInsertedNeighbors;
+		List<Vector2> candidateNeighbors;
+		
+		candidateNeighbors = new List<Vector2>();
+		
 		Vector2 pivot;
 		ConcreteRoom auxRoom = new ConcreteRoom(width/2, height/2, width, height);
 		
@@ -64,25 +85,26 @@ public class CreateDungeon : MonoBehaviour
 		createdRooms.Add(auxRoom);
 		
 		//adding the neighbors to the neighbors list
-		updateNeighbors(auxRoom.neighbors);
+		lastInsertedNeighbors = updateNeighbors(candidateNeighbors, auxRoom.neighbors);
 		
 		nRooms--;
 				
 		while(nRooms > 0)
 		{
-			pivot = getRandomNeighbor();
+			pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors);
 			auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, height, width);
 			
 			//don't allow duplicate room creation
 			while(createdRooms.IndexOf(auxRoom) >= 0)
 			{
-				pivot = getRandomNeighbor();
+				pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors);
 				auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, height, width);
 			}
 			
 			createdRooms.Add(auxRoom);
-			updateNeighbors(auxRoom.neighbors);
+			lastInsertedNeighbors = updateNeighbors(candidateNeighbors, auxRoom.neighbors);
 			nRooms--;
+			//Debug.Log("Room X: " + auxRoom.x + " Room Y: " + auxRoom.y);
 			map[auxRoom.x, auxRoom.y] = 1;
 		}
 		
@@ -118,6 +140,35 @@ public class CreateDungeon : MonoBehaviour
 					concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
 				}
 			}	
+		}
+	}
+	
+	void clearDungeonMap(ref int[,] map)
+	{
+		map = new int[gridWidth, gridHeight];	
+		
+		GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
+		
+		foreach(GameObject room in rooms)
+		{
+			GameObject.Destroy(room);
+		}
+	}
+	
+	void generateNewDungeon()
+	{
+		clearDungeonMap(ref dungeonMap);
+		
+		generateDungeon(ref dungeonMap, gridWidth, gridHeight);
+		
+		spawnRooms(dungeonMap, roomPrefab);
+	}
+	
+	void OnGUI()
+	{
+		if(GUI.Button(new Rect(0, 0, 100, 50), "Gerar de Novo"))
+		{
+			generateNewDungeon();
 		}
 	}
 }
