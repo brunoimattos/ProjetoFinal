@@ -65,6 +65,7 @@ public class CreateDungeon : MonoBehaviour
 	{
 		
 		int nRooms = Random.Range(8, 14);
+		Debug.Log("nRooms: " + nRooms);
 		
 		List<Vector2> lastInsertedNeighbors = new List<Vector2>();
 		List<Vector2> candidateNeighbors = new List<Vector2>();
@@ -85,21 +86,20 @@ public class CreateDungeon : MonoBehaviour
 		while(nRooms > 0)
 		{
 			pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors);	
-			auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, height, width);
+			auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, width, height);
 			
 			//don't allow duplicate room creation
 			while(createdRooms.IndexOf(auxRoom) >= 0)
 			{
 				pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors);
-				auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, height, width);
+				auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, width, height);
 			}
 			
 			createdRooms.Add(auxRoom);
 			lastInsertedNeighbors = updateNeighbors(candidateNeighbors, auxRoom.neighbors);
 			nRooms--;
 			map[auxRoom.x, auxRoom.y] = 1;
-		}
-		
+		}		
 	}
 	
 	void debugMap(int[,] map)
@@ -126,7 +126,7 @@ public class CreateDungeon : MonoBehaviour
 		{
 			for(int i = 0; i < gridWidth; i++)
 			{
-				if(map[j,i] == 1)
+				if(map[i,j] == 1)
 				{
 					instPosition = new Vector3(roomPrefab.localScale.x * i, roomPrefab.localScale.y * j, 0);
 					concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;

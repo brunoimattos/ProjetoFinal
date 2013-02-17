@@ -34,7 +34,7 @@ public class ConcreteRoom
 	private void initializeNeighbors(int width, int height)
 	{
 		_Neighbors = new List<Vector2>();
-
+		
 		//West Neighbor
 		if(this._Position.x > 0)
 			_Neighbors.Add(this._Position + new Vector2(-1, 0));
