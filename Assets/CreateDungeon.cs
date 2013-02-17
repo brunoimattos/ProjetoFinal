@@ -99,6 +99,8 @@ public class CreateDungeon : MonoBehaviour
 			lastInsertedNeighbors = updateNeighbors(candidateNeighbors, auxRoom.neighbors);
 			nRooms--;
 			map[auxRoom.x, auxRoom.y] = 1;
+			Debug.Log("nRooms: " + nRooms);
+			debugMap(map);
 		}		
 	}
 	
@@ -109,7 +111,7 @@ public class CreateDungeon : MonoBehaviour
 		{
 			for(int i = 0; i < gridWidth; i++)
 			{
-				line += map[j,i].ToString();
+				line += map[i,j].ToString();
 			}	
 			Debug.Log(line);
 			Debug.Log("\n");
