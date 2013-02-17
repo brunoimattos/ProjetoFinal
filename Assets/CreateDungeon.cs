@@ -20,8 +20,6 @@ public class CreateDungeon : MonoBehaviour
 				
 		dungeonMap = new int[gridWidth, gridHeight];
 		
-		//debugMap(dungeonMap);
-		
 		generateDungeon(ref dungeonMap, gridWidth, gridHeight);
 		
 		spawnRooms(dungeonMap, roomPrefab);
@@ -99,8 +97,6 @@ public class CreateDungeon : MonoBehaviour
 			lastInsertedNeighbors = updateNeighbors(candidateNeighbors, auxRoom.neighbors);
 			nRooms--;
 			map[auxRoom.x, auxRoom.y] = 1;
-			Debug.Log("nRooms: " + nRooms);
-			debugMap(map);
 		}		
 	}
 	
@@ -139,7 +135,9 @@ public class CreateDungeon : MonoBehaviour
 	
 	void clearDungeonMap(ref int[,] map)
 	{
-		map = new int[gridWidth, gridHeight];	
+		map = new int[gridWidth, gridHeight];
+		
+		createdRooms.Clear();
 		
 		GameObject[] rooms = GameObject.FindGameObjectsWithTag("Room");
 		

@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ConcreteRoom
+public class ConcreteRoom : IEquatable<ConcreteRoom>
+
 {
 	private Vector2 _Position;
 	
@@ -50,6 +52,17 @@ public class ConcreteRoom
 		//South Neighbor
 		if(this._Position.y < height - 1)
 			_Neighbors.Add(this._Position +  new Vector2(0, 1));
+	}
+	
+	
+	public bool Equals(ConcreteRoom other)
+	{
+		if(this._Position.x == other.x && this._Position.y == other.y)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
 }
