@@ -9,6 +9,8 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	
 	private List<Vector2> _Neighbors;
 	
+	private Transform roomPrefab;
+	
 	public int x
 	{
 		get { return (int) this._Position.x; }
@@ -31,6 +33,16 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 		this._Position = new Vector2(x, y);
 			
 		initializeNeighbors(width, height);
+	}
+	
+	public void SetRoomPrefab(Transform roomPrefab)
+	{
+		this.roomPrefab = roomPrefab;
+	}
+	
+	public Transform getRoomPrefab()
+	{
+		return this.roomPrefab;
 	}
 	
 	private void initializeNeighbors(int width, int height)

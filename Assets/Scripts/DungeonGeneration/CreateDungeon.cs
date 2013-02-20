@@ -12,9 +12,24 @@ public class CreateDungeon : MonoBehaviour
 	
 	private int[,] dungeonMap;
 	private List<ConcreteRoom> createdRooms;
+	private Transform roomManager;
+	private RoomManager roomManagerScript;
 	
 	void Start()
 	{
+		
+		roomManager = GameObject.FindGameObjectWithTag("RoomManager").transform;
+		
+		if(roomManager == null)
+		{
+			Debug.LogError("There is no RoomManager in the scene. Level can't be built.");	
+		}
+		else
+		{
+			roomManagerScript = roomManager.GetComponent<RoomManager>();
+			
+			if (roomManagerScript == null) Debug.LogError("No RoomManager script attached to the RoomManager");
+		}
 		
 		createdRooms = new List<ConcreteRoom>();		
 				
@@ -22,7 +37,8 @@ public class CreateDungeon : MonoBehaviour
 		
 		generateDungeon(ref dungeonMap, gridWidth, gridHeight);
 		
-		spawnRooms(dungeonMap, roomPrefab);
+		//spawnRooms(dungeonMap, roomPrefab);
+		spawnRooms();
 	}
 	
 	List<Vector2> updateNeighbors(List<Vector2> candidateNeighbors, List<Vector2> newNeighbors)
@@ -70,6 +86,7 @@ public class CreateDungeon : MonoBehaviour
 		
 		Vector2 pivot;
 		ConcreteRoom auxRoom = new ConcreteRoom(width/2, height/2, width, height);
+		auxRoom.SetRoomPrefab(roomManagerScript.getRandomRoomTransform());
 		
 		map[auxRoom.x, auxRoom.y] = 1;
 		
@@ -93,6 +110,8 @@ public class CreateDungeon : MonoBehaviour
 				auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, width, height);
 			}
 			
+			auxRoom.SetRoomPrefab(roomManagerScript.getRandomRoomTransform());
+			
 			createdRooms.Add(auxRoom);
 			lastInsertedNeighbors = updateNeighbors(candidateNeighbors, auxRoom.neighbors);
 			nRooms--;
@@ -115,6 +134,7 @@ public class CreateDungeon : MonoBehaviour
 		}
 	}
 	
+	//Uses the map to spawn the Rooms with a default roomPrefab
 	void spawnRooms(int[,] map, Transform roomPrefab)
 	{
 		Transform concreteRoom;
@@ -131,6 +151,21 @@ public class CreateDungeon : MonoBehaviour
 				}
 			}	
 		}
+	}
+	
+	//Uses the ConcreteRoom to spawn the Rooms with their own Room Prefab
+	void spawnRooms()
+	{
+		Transform roomPrefab;
+		Transform concreteRoom;
+		Vector3 instPosition;
+		
+		foreach(ConcreteRoom room in createdRooms)
+		{
+			roomPrefab = room.getRoomPrefab();
+			instPosition = new Vector3(roomPrefab.localScale.x * room.x, roomPrefab.localScale.y * room.y, 0);
+			concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
+		}	
 	}
 	
 	void clearDungeonMap(ref int[,] map)
@@ -153,7 +188,8 @@ public class CreateDungeon : MonoBehaviour
 		
 		generateDungeon(ref dungeonMap, gridWidth, gridHeight);
 		
-		spawnRooms(dungeonMap, roomPrefab);
+		//spawnRooms(dungeonMap, roomPrefab);
+		spawnRooms();
 	}
 	
 	void OnGUI()
