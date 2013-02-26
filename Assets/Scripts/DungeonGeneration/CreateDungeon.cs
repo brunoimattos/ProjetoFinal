@@ -8,7 +8,8 @@ public class CreateDungeon : MonoBehaviour
 	public int gridHeight;
 	public float linearProb;
 	
-	
+	public Transform pivotPrefab;
+		
 	private int[,] dungeonMap;
 	private List<ConcreteRoom> createdRooms;
 	private Transform roomManager;
@@ -135,7 +136,7 @@ public class CreateDungeon : MonoBehaviour
 	}
 	
 	//Uses the map to spawn the Rooms with a default roomPrefab
-	void spawnRooms(int[,] map, Transform roomPrefab)
+	void spawnRooms(int[,] map, Transform roomPrefab, Transform defaultPrefab)
 	{
 		Transform concreteRoom;
 		Vector3 instPosition;
@@ -148,6 +149,11 @@ public class CreateDungeon : MonoBehaviour
 				{
 					instPosition = new Vector3(roomPrefab.localScale.x * i, roomPrefab.localScale.y * j, 0);
 					concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
+				}
+				else if(map[i,j] == 0)
+				{
+					instPosition = new Vector3(defaultPrefab.localScale.x * i, defaultPrefab.localScale.y * j, 0);
+					concreteRoom = GameObject.Instantiate(defaultPrefab, instPosition, Quaternion.identity) as Transform;
 				}
 			}	
 		}
@@ -166,6 +172,14 @@ public class CreateDungeon : MonoBehaviour
 			instPosition = new Vector3(roomPrefab.localScale.x * room.x, roomPrefab.localScale.y * room.y, 0);
 			concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
 		}	
+		
+		if(pivotPrefab != null)
+		{
+			instPosition = new Vector3(0, 0, 0);
+			concreteRoom = GameObject.Instantiate(pivotPrefab, instPosition, Quaternion.identity) as Transform;
+		}
+		
+		
 	}
 	
 	void clearDungeonMap(ref int[,] map)
@@ -188,7 +202,7 @@ public class CreateDungeon : MonoBehaviour
 		
 		generateDungeon(ref dungeonMap, gridWidth, gridHeight);
 		
-		//spawnRooms(dungeonMap, roomPrefab);
+		//spawnRooms(dungeonMap, roomPrefab, defaultPrefab);
 		spawnRooms();
 		
 		return createdRooms;
@@ -215,7 +229,7 @@ public class CreateDungeon : MonoBehaviour
 		
 		generateDungeon(ref dungeonMap, gridWidth, gridHeight);
 		
-		//spawnRooms(dungeonMap, roomPrefab);
+		//spawnRooms(dungeonMap, roomPrefab, defaultPrefab);
 		spawnRooms();
 		
 		return createdRooms;
