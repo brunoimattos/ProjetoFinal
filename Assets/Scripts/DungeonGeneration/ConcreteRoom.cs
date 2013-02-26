@@ -67,6 +67,11 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	}
 	
 	
+	public Transform getPrefab()
+	{
+		return this.roomPrefab;
+	}
+	
 	public bool Equals(ConcreteRoom other)
 	{
 		if(this._Position.x == other.x && this._Position.y == other.y)
@@ -75,6 +80,11 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 		}
 		
 		return false;
+	}
+	
+	public override string ToString ()
+	{
+		 return "X: " + this.x + " Y: " + this.y;
 	}
 
 }

@@ -6,7 +6,6 @@ public class CreateDungeon : MonoBehaviour
 
 	public int gridWidth;
 	public int gridHeight;
-	public Transform roomPrefab;
 	public float linearProb;
 	
 	
@@ -17,7 +16,7 @@ public class CreateDungeon : MonoBehaviour
 	
 	void Start()
 	{
-		
+		/*
 		roomManager = GameObject.FindGameObjectWithTag("RoomManager").transform;
 		
 		if(roomManager == null)
@@ -39,6 +38,7 @@ public class CreateDungeon : MonoBehaviour
 		
 		//spawnRooms(dungeonMap, roomPrefab);
 		spawnRooms();
+		*/
 	}
 	
 	List<Vector2> updateNeighbors(List<Vector2> candidateNeighbors, List<Vector2> newNeighbors)
@@ -77,7 +77,7 @@ public class CreateDungeon : MonoBehaviour
 	
 	private void generateDungeon(ref int[,] map, int width, int height)
 	{
-		
+		//TIRAR HARDCODED
 		int nRooms = Random.Range(8, 14);
 		Debug.Log("nRooms: " + nRooms);
 		
@@ -182,7 +182,7 @@ public class CreateDungeon : MonoBehaviour
 		}
 	}
 	
-	void generateNewDungeon()
+	public List<ConcreteRoom> generateNewDungeon()
 	{
 		clearDungeonMap(ref dungeonMap);
 		
@@ -190,13 +190,36 @@ public class CreateDungeon : MonoBehaviour
 		
 		//spawnRooms(dungeonMap, roomPrefab);
 		spawnRooms();
+		
+		return createdRooms;
 	}
 	
-	void OnGUI()
+	public List<ConcreteRoom> MakeDungeon()
 	{
-		if(GUI.Button(new Rect(0, 0, 100, 50), "Gerar de Novo"))
+		roomManager = GameObject.FindGameObjectWithTag("RoomManager").transform;
+		
+		if(roomManager == null)
 		{
-			generateNewDungeon();
+			Debug.LogError("There is no RoomManager in the scene. Level can't be built.");	
 		}
+		else
+		{
+			roomManagerScript = roomManager.GetComponent<RoomManager>();
+			
+			if (roomManagerScript == null) Debug.LogError("No RoomManager script attached to the RoomManager");
+		}
+		
+		createdRooms = new List<ConcreteRoom>();		
+				
+		dungeonMap = new int[gridWidth, gridHeight];
+		
+		generateDungeon(ref dungeonMap, gridWidth, gridHeight);
+		
+		//spawnRooms(dungeonMap, roomPrefab);
+		spawnRooms();
+		
+		return createdRooms;
 	}
+
+
 }

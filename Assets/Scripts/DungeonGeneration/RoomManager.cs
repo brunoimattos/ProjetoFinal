@@ -15,7 +15,7 @@ public class RoomManager : MonoBehaviour
 				
 	public Transform getRandomRoomTransform()
 	{
-		int i = Random.Range(0, prefabRooms.Count-1);
+		int i = Random.Range(0, prefabRooms.Count);
 		
 		return prefabRooms[i];
 	}
