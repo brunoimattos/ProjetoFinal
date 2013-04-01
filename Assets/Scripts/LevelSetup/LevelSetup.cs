@@ -8,7 +8,8 @@ public class LevelSetup : MonoBehaviour {
 	public Transform DungeonCreator;
 	public Transform Player_Marty;
 	
-	private List<ConcreteRoom> dungeonRooms;
+	private Dungeon dungeon;
+	
 	
 	
 	void Start () {
@@ -16,22 +17,18 @@ public class LevelSetup : MonoBehaviour {
 		
 		if(Player_Marty == null) Debug.LogError("No Player assigned.");
 		
-		dungeonRooms = DungeonCreator.GetComponent<CreateDungeon>().MakeDungeon();
+		dungeon = DungeonCreator.GetComponent<CreateDungeon>().MakeDungeon();
 		
-		placePlayer(Player_Marty, dungeonRooms);
+		placePlayer(Player_Marty, dungeon);
 		
 	}
 	
 	
-	private void placePlayer(Transform player, List<ConcreteRoom> rooms)
+	private void placePlayer(Transform player, Dungeon dungeon)
 	{
-		int rnd = Random.Range(0, rooms.Count);
-		
-		ConcreteRoom rndRoom = rooms[rnd];
-		
-		Debug.Log(rndRoom.ToString());
-		
-		player.transform.position = new Vector3(rndRoom.getRoomPrefab().localScale.x * rndRoom.x, rndRoom.getRoomPrefab().localScale.y * rndRoom.y, -1);
+		ConcreteRoom initialRoom = dungeon.getInitialRoom();		
+				
+		player.transform.position = new Vector3(initialRoom.getRoomPrefab().localScale.x * initialRoom.x, initialRoom.getRoomPrefab().localScale.y * initialRoom.y, -1);
 	}
 	
 	void Update () {
@@ -42,8 +39,8 @@ public class LevelSetup : MonoBehaviour {
 	{
 		if(GUI.Button(new Rect(0, 0, 100, 50), "Gerar de Novo"))
 		{
-			dungeonRooms = DungeonCreator.GetComponent<CreateDungeon>().generateNewDungeon();
-			placePlayer(Player_Marty, dungeonRooms);
+			dungeon = DungeonCreator.GetComponent<CreateDungeon>().generateNewDungeon();
+			placePlayer(Player_Marty, dungeon);
 		}
 	}
 }

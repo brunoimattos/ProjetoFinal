@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public class ConcreteRoom : IEquatable<ConcreteRoom>
 
 {
-	private Vector2 _Position;
+	protected Vector2 _Position;
 	
-	private List<Vector2> _Neighbors;
+	protected List<Vector2> _Neighbors;
 	
-	private Transform roomPrefab;
+	protected Transform roomPrefab;
 	
 	public int x
 	{
@@ -35,9 +35,9 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 		initializeNeighbors(width, height);
 	}
 	
-	public void SetRoomPrefab(Transform roomPrefab)
+	public virtual void setRoomPrefab(RoomManager roomManagerScript)
 	{
-		this.roomPrefab = roomPrefab;
+		this.roomPrefab = roomManagerScript.getRandomRegularRoom();
 	}
 	
 	public Transform getRoomPrefab()
