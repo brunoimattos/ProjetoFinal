@@ -44,7 +44,7 @@ public class DungeonFactory : IDungeonFactory
 		lastInsertedNeighbors = updateNeighbors(candidateNeighbors, getRoomPossibleNeighbors(auxRoom, dungeon));
 
 		
-		List<ConcreteRoom> regularRooms = createRegularRooms(createdRooms, candidateNeighbors, lastInsertedNeighbors, linearFactor, dungeon);
+		List<RegularRoom> regularRooms = createRegularRooms(createdRooms, candidateNeighbors, lastInsertedNeighbors, linearFactor, dungeon);
 		
 		foreach(ConcreteRoom cRoom in regularRooms)
 		{
@@ -128,22 +128,21 @@ public class DungeonFactory : IDungeonFactory
 		
 	}
 	
-	private ConcreteRoom createRandomRegularRoom(List<ConcreteRoom> createdRooms, List<Vector2> candidateNeighbors, List<Vector2> lastInsertedNeighbors , float linearFactor, Dungeon dungeon)
+	private RegularRoom createRandomRegularRoom(List<ConcreteRoom> createdRooms, List<Vector2> candidateNeighbors, List<Vector2> lastInsertedNeighbors , float linearFactor, Dungeon dungeon)
 	{
 		
 		
 		Vector2 pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors, linearFactor);	
-		ConcreteRoom auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, dungeon.width, dungeon.height);
+		RegularRoom auxRoom = new RegularRoom((int)pivot.x, (int)pivot.y, dungeon.width, dungeon.height);
 		
 		//don't allow duplicate room creation
 		while(createdRooms.IndexOf(auxRoom) >= 0)
 		{
 			pivot = getRandomNeighbor(candidateNeighbors, lastInsertedNeighbors, linearFactor);	
-			auxRoom = new ConcreteRoom((int)pivot.x, (int)pivot.y, dungeon.width, dungeon.height);
+			auxRoom = new RegularRoom((int)pivot.x, (int)pivot.y, dungeon.width, dungeon.height);
 		}
 			
 		return auxRoom;
-		//return new RegularRoom(...)
 	}
 	
 	private FinalRoom createRandomFinalRoom(List<ConcreteRoom> createdRooms, List<Vector2> candidateNeighbors, List<Vector2> lastInsertedNeighbors , float linearFactor, Dungeon dungeon)
@@ -167,10 +166,10 @@ public class DungeonFactory : IDungeonFactory
 		return createRandomInitialRoom(dungeon);
 	}
 	
-	private List<ConcreteRoom> createRegularRooms(List<ConcreteRoom> createdRooms, List<Vector2> candidateNeighbors, List<Vector2> lastInsertedNeighbors , float linearFactor, Dungeon dungeon)
+	private List<RegularRoom> createRegularRooms(List<ConcreteRoom> createdRooms, List<Vector2> candidateNeighbors, List<Vector2> lastInsertedNeighbors , float linearFactor, Dungeon dungeon)
 	{
-		List<ConcreteRoom> regularRooms = new List<ConcreteRoom>();
-		ConcreteRoom auxRoom;
+		List<RegularRoom> regularRooms = new List<RegularRoom>();
+		RegularRoom auxRoom;
 		int nRooms = dungeon.getNRooms() - createdRooms.Count - 1; // will not work if we have more than 1 final room.
 		
 		while(nRooms > 0)
