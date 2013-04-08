@@ -18,7 +18,6 @@ public class RoomManager : MonoBehaviour
 	public Transform getRandomInitialRoom()
 	{
 		int i = Random.Range(0, initialRooms.Count);
-		Debug.Log("Nome: " + initialRooms[i].name);
 		return initialRooms[i];
 	}
 	

@@ -3,50 +3,73 @@ using System.Collections.Generic;
 
 public class Dungeon 
 {
-	private List<ConcreteRoom> dungeonRooms;
-	private int initialRoom;
-	private int finalRoom;
-	private int nRooms;
-	private int width;
-	private int height;
+	private List<ConcreteRoom> _DungeonRooms;
+	private int _InitialRoom;
+	private int _FinalRoom;
+	private int _nRooms;
+	private int _Width;
+	private int _Height;
+		
+	public int width
+	{ 
+		get { return this._Width; } 
+		
+		set { this._Width = value; }
+	}
+	
+	public int height
+	{ 
+		get	{ return this._Height; } 
+		
+		set { this._Height = value; }
+	}
 	
 	public Dungeon(int width, int height)
 	{
-		this.width = width;
-		this.height = height;
-		this.dungeonRooms = new List<ConcreteRoom>();
-		this.nRooms = Random.Range((int) (0.25f * width*height), (int) (0.5f * width*height)); //is this a suitable interval??
-		Debug.Log("NROOMS: " + nRooms);
+		this._Width = width;
+		this._Height = height;
+		this._DungeonRooms = new List<ConcreteRoom>();
+		this._nRooms = Random.Range((int) (0.25f * _Width * _Height), (int) (0.5f * _Width * _Height)); //is this a suitable interval??
 	}
 	
 	public int getNRooms()
 	{
-		return this.nRooms;
+		return this._nRooms;
 	}
 	
 	public void setDungeonRooms(List<ConcreteRoom> rooms)
 	{
-		this.dungeonRooms = rooms;
+		this._DungeonRooms = rooms;
 	}
 	
 	public List<ConcreteRoom> getDungeonRooms()
 	{
-		return this.dungeonRooms;
+		return this._DungeonRooms;
 	}
 	
 	public InitialRoom getInitialRoom()
 	{
-		return (InitialRoom) this.dungeonRooms[initialRoom];
+		return (InitialRoom) this._DungeonRooms[_InitialRoom];
+	}
+	
+	public FinalRoom getFinalRoom()
+	{
+		return (FinalRoom) this._DungeonRooms[_FinalRoom];
 	}
 	
 	public void setInitialRoom(int initialRoomIndex)
 	{
-		this.initialRoom = initialRoomIndex;	
+		this._InitialRoom = initialRoomIndex;	
+	}
+	
+	public void setFinalRoom(int finalRoomIndex)
+	{
+		this._FinalRoom = finalRoomIndex;
 	}
 	
 	public override string ToString ()
 	{
-		 return "N Rooms: " + this.dungeonRooms.Count;
+		 return "N Rooms: " + this._DungeonRooms.Count;
 	}
 	
 	

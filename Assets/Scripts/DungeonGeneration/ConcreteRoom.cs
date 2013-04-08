@@ -7,7 +7,7 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 {
 	protected Vector2 _Position;
 	
-	protected List<Vector2> _Neighbors;
+	protected List<ConcreteRoom> _Neighbors;
 	
 	protected Transform roomPrefab;
 	
@@ -23,16 +23,16 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 		set { this._Position.y = value; }
 	}
 	
-	public List<Vector2> neighbors
+	public List<ConcreteRoom> neighbors
 	{
-		get{ return this._Neighbors; }
+		get{ return _Neighbors;}
 	}
 	
 	public ConcreteRoom(int x, int y, int width, int height)
 	{
 		this._Position = new Vector2(x, y);
 			
-		initializeNeighbors(width, height);
+		//initializeNeighbors(width, height);
 	}
 	
 	public virtual void setRoomPrefab(RoomManager roomManagerScript)
@@ -44,28 +44,6 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	{
 		return this.roomPrefab;
 	}
-	
-	private void initializeNeighbors(int width, int height)
-	{
-		_Neighbors = new List<Vector2>();
-		
-		//West Neighbor
-		if(this._Position.x > 0)
-			_Neighbors.Add(this._Position + new Vector2(-1, 0));
-		
-		//East Neighbor
-		if(this._Position.x < width - 1)
-			_Neighbors.Add(this._Position + new Vector2(1, 0));
-		
-		//North Neighbor
-		if(this._Position.y > 0)
-			_Neighbors.Add(this._Position + new Vector2(0, -1));
-		
-		//South Neighbor
-		if(this._Position.y < height - 1)
-			_Neighbors.Add(this._Position +  new Vector2(0, 1));
-	}
-	
 	
 	public Transform getPrefab()
 	{

@@ -97,10 +97,8 @@ public class CreateDungeon : MonoBehaviour
 		List<ConcreteRoom> rooms = dun.getDungeonRooms();
 				
 		foreach(ConcreteRoom cRoom in dun.getDungeonRooms())
-		{
-			
-			cRoom.setRoomPrefab(roomManagerScript);	
-			Debug.Log(cRoom);
+		{	
+			cRoom.setRoomPrefab(roomManagerScript);
 		}
 		
 		spawnRooms(dun.getDungeonRooms());
