@@ -17,6 +17,7 @@ public class ShowHideBehaviour : MonoBehaviour
 	IEnumerator showObject(float showTime)
 	{
 		showHideObject.renderer.enabled = true;
+		showHideObject.gameObject.collider.enabled = true;
 		
 		yield return new WaitForSeconds(showTime);
 		
@@ -26,6 +27,7 @@ public class ShowHideBehaviour : MonoBehaviour
 	IEnumerator hideObject(float hideTime)
 	{
 		showHideObject.renderer.enabled = false;
+		showHideObject.gameObject.collider.enabled = false;
 		yield return new WaitForSeconds(hideTime);
 		
 		StartCoroutine(showObject(showTime));
