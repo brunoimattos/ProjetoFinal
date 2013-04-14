@@ -24,15 +24,24 @@ public class PlayerMovement : MonoBehaviour
 //		this.rigidbody.MovePosition( this.transform.position + (movement * playerSpeed * Time.deltaTime));
 	}
 	
-/*	void OnCollisionEnter(Collision col)
+	
+	/*void OnTriggerStay(Collider collider)
 	{
-		this.rigidbody.velocity = Vector3.zero;
-		Debug.Log("Booo ho! Marty died!");
+		if(collider.gameObject.CompareTag("Trap"))
+		{
+			Debug.Log("LOL, I'm dead!");	
+		}
+	}*/
+	
+	void OnCollisionEnter(Collision col)
+	{	
+		Debug.Log("Hit!");
+		if(col.gameObject.CompareTag("Trap"))
+		{
+			Application.LoadLevel("workshop");
+			Debug.Log("LOL, I'm dead!");	
+		}
 	}
 	
-	void OnCollisionExit(Collision col)
-	{
-		this.rigidbody.velocity = Vector3.zero;
-		//Debug.Log("Booo ho! Marty died!");
-	}*/
+	
 }
