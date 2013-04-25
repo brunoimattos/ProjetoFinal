@@ -30,30 +30,13 @@ public class PingPongMovementBehaviour : MonoBehaviour
 		
 		iTween.MoveTo(this.transform.gameObject, itweenParams);
 		
-		//StartCoroutine(moveToB(speed, movementTime));
 	}
 	
-	IEnumerator moveToB(float speed, float movementTime)
+	void Update()
 	{
-		yield return new WaitForSeconds(movementTime);
+		/*float distance = (pointB.position - pointA.position).magnitude;
 		
-		//StartCoroutine(moveToA(speed, movementTime));
+		this.transform.position = pointA.transform.position + Vector3.right * Mathf.PingPong(speed * Time.time, distance);*/
 	}
-	
-	IEnumerator moveToA(float speed, float movementTime)
-	{
-		
-		itweenParams["x"] = pointA.transform.position.x;
-		itweenParams["y"] = pointA.transform.position.y;
-		itweenParams["z"] = pointA.transform.position.z;
-			
-		
-		iTween.MoveTo(this.transform.gameObject, itweenParams);
-		yield return new WaitForSeconds(movementTime);
-		
-		StartCoroutine(moveToB(speed, movementTime));
-	}
-	
-	
-	
+
 }

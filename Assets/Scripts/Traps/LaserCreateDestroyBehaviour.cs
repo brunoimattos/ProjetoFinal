@@ -66,7 +66,7 @@ public class LaserCreateDestroyBehaviour : MonoBehaviour
 		createdLaser = Instantiate(createDestroyObject, mid_distance, this.transform.rotation * Quaternion.Euler(0, 0, -90.0f)) as Transform;
 		
 		Vector3 scale = createdLaser.localScale;
-		scale.y = distance / 2;
+		scale.y = distance / 2 * 0.8f;
 				
 		createdLaser.gameObject.transform.localScale = scale;
 		createdLaser.parent = this.gameObject.transform;

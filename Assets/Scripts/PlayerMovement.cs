@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		this.transform.Translate(movement * playerSpeed * Time.deltaTime);
 		
-//		this.rigidbody.MovePosition( this.transform.position + (movement * playerSpeed * Time.deltaTime));
+		//this.rigidbody.MovePosition( this.transform.position + (movement * playerSpeed * Time.deltaTime));
 	}
 	
 	
