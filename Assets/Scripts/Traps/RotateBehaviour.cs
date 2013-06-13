@@ -16,9 +16,10 @@ public class RotateBehaviour : MonoBehaviour
 	}
 	
 	
-	void Update()
+	void FixedUpdate()
 	{
-		this.transform.RotateAround(rotationAxis, rotationSpeed * Time.deltaTime);
+		//this.transform.RotateAround(rotationAxis, rotationSpeed * Time.deltaTime);
+		this.rigidbody.AddTorque(rotationAxis*rotationSpeed);
 		
 	}
 }
