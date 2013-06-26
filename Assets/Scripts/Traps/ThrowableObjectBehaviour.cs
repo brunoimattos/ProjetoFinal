@@ -23,7 +23,6 @@ public class ThrowableObjectBehaviour : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision col)
 	{
-		Debug.Log("Ouch!");
 		// Explodes on impact with receiver.
 		// Maybe we could create a ParticleEmitter when this happens, who knows.
 		if(col.gameObject.CompareTag("Receiver"))
