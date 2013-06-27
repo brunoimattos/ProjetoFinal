@@ -49,7 +49,13 @@ public class PlayerMovement : MonoBehaviour
 			Application.LoadLevel("workshop");
 			Debug.Log("LOL, I'm dead!");	
 		}
+		
+		if(col.gameObject.CompareTag("ConfuseGas"))
+		{
+			this.confusion = -1;
+		}
 	}
+
 	
 	
 	
