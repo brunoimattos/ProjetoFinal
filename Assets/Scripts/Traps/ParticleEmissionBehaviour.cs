@@ -11,17 +11,18 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	public float particle_lifespan = 4.0f;
 	public float emission_angle = 30.0f;
 	public float particle_initial_speed = 0.5f;
-	public Transform particle;
+	public Material particle_material;
 	
 	private List<Transform> particles;
 	private Transform inst_particle;
 	private Vector3 emission_direction;
 	private EmittedParticleBehaviour particleApi;
+	private Transform my_particle;
 	
 	void Start()
 	{
 		particles = new List<Transform>();
-		
+		//my_particle = create_particle(particle_material);
 		StartCoroutine(timed_bursts(burst_mode, burst_cooldown));	
 	}
 	
@@ -39,14 +40,20 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	{
 		for(int i=0; i < particle_count; i++)
 		{
-			inst_particle = GameObject.Instantiate(particle, this.transform.position, Quaternion.Euler(90, 0, 0)) as Transform;
+			//inst_particle = GameObject.Instantiate(particle, this.transform.position, Quaternion.Euler(-90, 0, 0)) as Transform;
+			//inst_particle = GameObject.Instantiate(my_particle, this.transform.position, Quaternion.Euler(-90, 0, 0)) as Transform;
+			inst_particle = create_particle(particle_material, transform.position, Quaternion.Euler(-90, 0, 0));
 			emission_direction = get_random_direction(emission_angle);
-			
+							
 			particleApi = inst_particle.GetComponent<EmittedParticleBehaviour>();		
 			
 			if(particleApi == null)
 			{
 				Debug.LogError("No EmittedParticleBehaviour in instantiaded particle.")	;
+			}
+			else
+			{
+				Debug.Log("All is ok!");
 			}
 			
 			inst_particle.parent = this.transform;
@@ -71,9 +78,11 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	
 	private Vector3 get_random_direction(float opening_angle)
 	{
-		Vector3 random_direction = (Random.insideUnitSphere - this.transform.position).normalized;
-				
-		float angle = Mathf.Acos(Vector3.Dot(random_direction, this.transform.forward));
+		Vector3 random_direction = (Random.insideUnitSphere + this.transform.position).normalized;
+		
+		
+		
+		float angle = Mathf.Acos(Vector3.Dot(random_direction, this.transform.forward)/(Vector3.Magnitude(random_direction) * Vector3.Magnitude(this.transform.forward)));
 		
 		Debug.Log("Angle: " + angle);
 		while(angle > (opening_angle/2) || angle < -(opening_angle/2))
@@ -87,5 +96,33 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 		
 		return random_direction.normalized;
 
+	}
+
+	private Transform create_particle(Material material, Vector3 position, Quaternion rotation)
+	{
+		GameObject particle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+		GameObject helper = GameObject.CreatePrimitive(PrimitiveType.Plane);
+				
+		MeshFilter ms_fl = particle.GetComponent<MeshFilter>();
+				
+			
+		ms_fl.mesh = helper.GetComponent<MeshFilter>().mesh;
+		
+		Destroy(helper);
+		
+		particle.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+		
+		particle.name = "MyParticle";
+		particle.gameObject.AddComponent<EmittedParticleBehaviour>();
+				
+		BoxCollider bx_cl = particle.gameObject.collider as BoxCollider;
+		
+		bx_cl.size = new Vector3(10.0f, 1.0f, 10.0f);
+		
+		particle.renderer.material = material;
+		particle.transform.position = position;
+		particle.transform.rotation = rotation;
+		
+		return particle.transform;
 	}
 }
