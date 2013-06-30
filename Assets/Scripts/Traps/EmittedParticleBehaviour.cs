@@ -20,7 +20,7 @@ public class EmittedParticleBehaviour : MonoBehaviour
 	}
 	
 	private Vector3 _movement_velocity;
-	public Vector3 movement_velocity
+	public Vector3 movement_velocity 
 	{
 		set 
 		{
@@ -52,17 +52,15 @@ public class EmittedParticleBehaviour : MonoBehaviour
 			if(_lifespan <= 0.2 * _max_lifespan)
 			{
 				Destroy(this.gameObject);
-				Debug.Log("Alpha ao morrer: " + renderer.material.color.a);
+				//Debug.Log("Alpha ao morrer: " + renderer.material.color.a);
 			}
-			
-			Debug.Log("Alpha: " + renderer.material.color.a);
 			
 			renderer.material = set_material_alpha(this.renderer.material, _lifespan/_max_lifespan);
 			
 			_lifespan -= Time.deltaTime;
-			
-			transform.Translate(this._movement_velocity * Time.deltaTime, Space.World);
-								
+				
+			transform.Translate(_movement_velocity * Time.deltaTime, Space.World);	
+						
 		}	
 	}
 	
