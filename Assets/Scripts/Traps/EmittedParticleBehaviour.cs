@@ -3,7 +3,9 @@ using System.Collections;
 
 public class EmittedParticleBehaviour : MonoBehaviour
 {
-
+	
+	private ObjectPoolBehaviour obj_pool_api;
+	
 	private float _lifespan;
 	private float _max_lifespan;
 	public float lifespan
@@ -42,6 +44,12 @@ public class EmittedParticleBehaviour : MonoBehaviour
 	void Awake()
 	{
 		renderer.material = set_material_alpha(this.renderer.material, 2);
+		obj_pool_api = GameObject.FindGameObjectWithTag("ObjectPoolManager").GetComponent<ObjectPoolBehaviour>();
+		
+		if(obj_pool_api == null)
+		{
+			Debug.LogError("No access to ObjectPoolApi found!");	
+		}
 	}
 		
 	void Update() 
@@ -51,7 +59,8 @@ public class EmittedParticleBehaviour : MonoBehaviour
 			// Multiplicacao para que o objeto seja destruido antes da textura ficar totalmente invisivel.
 			if(_lifespan <= 0.2 * _max_lifespan)
 			{
-				Destroy(this.gameObject);
+				//Destroy(this.gameObject);
+				obj_pool_api.add_particle_to_pool(this.transform);
 				//Debug.Log("Alpha ao morrer: " + renderer.material.color.a);
 			}
 			

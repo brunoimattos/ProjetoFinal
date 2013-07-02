@@ -13,6 +13,8 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	public float particle_initial_speed = 0.5f;
 	public Material particle_material;
 	
+	public Transform particle_prefab;
+	
 	private List<Transform> particles;
 	private Transform inst_particle;
 	private Vector3 emission_direction;
@@ -21,6 +23,7 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	
 	private MeshFilter _particle_mesh_filter;
 	private Mesh _helper_mesh;
+	private ObjectPoolBehaviour obj_pool_api;
 	
 	void Awake()
 	{
@@ -28,6 +31,12 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 		GameObject helper = GameObject.CreatePrimitive(PrimitiveType.Plane);	
 		_helper_mesh = helper.GetComponent<MeshFilter>().mesh;
 		Destroy(helper);
+		
+		obj_pool_api = GameObject.FindGameObjectWithTag("ObjectPoolManager").GetComponent<ObjectPoolBehaviour>();
+		if(obj_pool_api == null)
+		{
+			Debug.LogError("No access to ObjectPoolApi found!");	
+		}
 	}
 	
 	void Start()
@@ -50,21 +59,20 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	{
 		for(int i=0; i < particle_count; i++)
 		{
-			//inst_particle = GameObject.Instantiate(particle, this.transform.position, Quaternion.Euler(-90, 0, 0)) as Transform;
-			//inst_particle = GameObject.Instantiate(my_particle, this.transform.position, Quaternion.Euler(-90, 0, 0)) as Transform;
-			inst_particle = create_particle(particle_material, transform.position, Quaternion.Euler(-90, 0, 0));
-			
-			particleApi = inst_particle.GetComponent<EmittedParticleBehaviour>();		
-			
-			if(particleApi == null)
+			if(obj_pool_api.particle_count > 0)
 			{
-				Debug.LogError("No EmittedParticleBehaviour in instantiaded particle.")	;
+				inst_particle = obj_pool_api.get_particle_from_pool();
+				inst_particle.position = transform.position;
+				inst_particle.gameObject.SetActive(true);
 			}
 			else
 			{
-				Debug.Log("All is ok!");
+				inst_particle = create_particle(particle_material, transform.position, Quaternion.Euler(-90, 0, 0));	
 			}
 			
+			
+			particleApi = inst_particle.GetComponent<EmittedParticleBehaviour>();		
+						
 			inst_particle.parent = this.transform;
 			
 			particleApi.movement_velocity = get_random_direction(emission_angle) * particle_speed;
@@ -93,12 +101,11 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 		
 		float angle = Mathf.Acos(Vector3.Dot(random_direction, this.transform.forward)/(Vector3.Magnitude(random_direction) * Vector3.Magnitude(this.transform.forward))) * Mathf.Rad2Deg;
 		
-		Debug.Log("Angle: " + angle);
+		
 		while(angle > (opening_angle/2) || angle < -(opening_angle/2))
 		{
 			random_direction = (Random.insideUnitSphere - this.transform.position).normalized;
 			angle = Mathf.Acos(Vector3.Dot(random_direction, this.transform.forward)/(Vector3.Magnitude(random_direction) * Vector3.Magnitude(this.transform.forward))) * Mathf.Rad2Deg;
-			Debug.Log("Tentando: Angle: " + angle);
 		}
 			
 		random_direction.z = 0;
@@ -113,16 +120,16 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	
 	private Vector3 get_random_direction(float opening_angle)
 	{
-		float direction_angle = Random.Range(-(opening_angle/2), opening_angle/2);
-		Debug.Log("Random Angle: " + direction_angle);
+		float direction_angle = Random.Range(-(opening_angle/2), opening_angle/2);	
 		Vector3 random_direction = Quaternion.AngleAxis(direction_angle, transform.up) * transform.forward;
-		Debug.Log("Random Direction: " + random_direction);
+	
 		return random_direction;
 
 	}
-
+	
 	private Transform create_particle(Material material, Vector3 position, Quaternion rotation)
 	{
+		/*
 		GameObject particle = GameObject.CreatePrimitive(PrimitiveType.Cube);					
 		_particle_mesh_filter = particle.GetComponent<MeshFilter>();
 		_particle_mesh_filter.mesh = _helper_mesh;		
@@ -142,5 +149,8 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 		particle.tag = "ConfuseGas";
 		
 		return particle.transform;
+		*/
+		Transform instantiated = GameObject.Instantiate(particle_prefab, position, rotation) as Transform;
+		return instantiated;
 	}
 }
