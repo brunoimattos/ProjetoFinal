@@ -4,6 +4,7 @@ using System.Collections;
 public class RotateTransformBehaviour : MonoBehaviour
 {
 	public float rotationSpeed;
+	//Always world coordinates!
 	public Vector3 rotationAxis;
 	
 	
@@ -18,6 +19,7 @@ public class RotateTransformBehaviour : MonoBehaviour
 	
 	void FixedUpdate()
 	{
+		//World coordinates!
 		this.transform.RotateAround(rotationAxis, rotationSpeed * Time.deltaTime);		
 	}
 }

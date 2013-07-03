@@ -43,7 +43,7 @@ public class ThrowObjectBehaviour : MonoBehaviour {
 	IEnumerator throw_object(float throw_interval, float throw_speed, Vector3 throw_direction)
 	{
 		while(true){
-			throwable_instantiated = GameObject.Instantiate(throwable_object ,this.transform.position, Quaternion.identity) as Transform;
+			throwable_instantiated = GameObject.Instantiate(throwable_object ,this.transform.position, Quaternion.Euler(-90, 0, 0)) as Transform;
 			Physics.IgnoreCollision(throwable_instantiated.collider, this.collider);
 			throwable_instantiated.parent = this.gameObject.transform;
 			throwable_instantiated.GetComponent<ThrowableObjectBehaviour>().throw_object(throw_speed * throw_direction);
