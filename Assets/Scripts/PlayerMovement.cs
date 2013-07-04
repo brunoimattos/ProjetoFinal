@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 	
 	void doMovement()
 	{
-		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0); 
+		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); 
 		
 		this.transform.Translate(movement * confusion * playerSpeed * Time.deltaTime);
 		
@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		if(col.gameObject.CompareTag("ConfuseGas"))
 		{
+			Destroy(col.gameObject);
 			this.confusion = -1;
 		}
 	}

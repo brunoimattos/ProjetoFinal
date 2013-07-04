@@ -67,7 +67,7 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 			}
 			else
 			{
-				inst_particle = create_particle(particle_material, transform.position, Quaternion.Euler(-90, 0, 0));	
+				inst_particle = create_particle(particle_material, transform.position, Quaternion.identity);	
 			}
 			
 			
