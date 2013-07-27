@@ -7,6 +7,7 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	public bool burst_mode = true;
 	public float burst_cooldown = 2.0f;		
 	
+	
 	public int particle_count = 2;
 	public float particle_lifespan = 4.0f;
 	public float emission_angle = 30.0f;
