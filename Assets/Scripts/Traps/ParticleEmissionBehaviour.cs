@@ -22,16 +22,17 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	private EmittedParticleBehaviour particleApi;
 	private Transform my_particle;
 	
-	private MeshFilter _particle_mesh_filter;
-	private Mesh _helper_mesh;
+	//private MeshFilter _particle_mesh_filter;
+	//private Mesh _helper_mesh;
+	
 	private ObjectPoolBehaviour obj_pool_api;
 	
 	void Awake()
 	{
 		// Caching the particle's Mesh Filter :)
-		GameObject helper = GameObject.CreatePrimitive(PrimitiveType.Plane);	
-		_helper_mesh = helper.GetComponent<MeshFilter>().mesh;
-		Destroy(helper);
+		//GameObject helper = GameObject.CreatePrimitive(PrimitiveType.Plane);	
+		//_helper_mesh = helper.GetComponent<MeshFilter>().mesh;
+		//Destroy(helper);
 		
 		obj_pool_api = GameObject.FindGameObjectWithTag("ObjectPoolManager").GetComponent<ObjectPoolBehaviour>();
 		if(obj_pool_api == null)
