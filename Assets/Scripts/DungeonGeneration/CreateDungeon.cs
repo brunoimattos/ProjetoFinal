@@ -31,6 +31,9 @@ public class CreateDungeon : MonoBehaviour
 	{
 		Transform roomPrefab;
 		Transform concreteRoom;
+		Transform leftWallPrefab;
+		Transform concreteWall;
+		Vector3	leftWallPosition;
 		Vector3 instPosition;
 		
 		foreach(ConcreteRoom room in createdRooms)
@@ -38,6 +41,10 @@ public class CreateDungeon : MonoBehaviour
 			roomPrefab = room.getRoomPrefab();
 			instPosition = new Vector3(roomPrefab.localScale.x * room.x, roomPrefab.localScale.y * room.y, 0);
 			concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
+			
+			leftWallPrefab = room.getWallPrefab();
+			leftWallPosition = new Vector3(roomPrefab.localScale.x * room.x, roomPrefab.localScale.y * room.y, 0);
+			concreteWall = GameObject.Instantiate(leftWallPrefab, leftWallPosition, Quaternion.identity) as Transform;
 		}	
 		
 		if(pivotPrefab != null)
@@ -69,7 +76,8 @@ public class CreateDungeon : MonoBehaviour
 		foreach(ConcreteRoom cRoom in dun.getDungeonRooms())
 		{
 			
-			cRoom.setRoomPrefab(roomManagerScript);		
+			cRoom.setRoomPrefab(roomManagerScript);
+			cRoom.setWallPrefab(roomManagerScript);
 		}
 		
 		spawnRooms(dun.getDungeonRooms());
@@ -99,6 +107,7 @@ public class CreateDungeon : MonoBehaviour
 		foreach(ConcreteRoom cRoom in dun.getDungeonRooms())
 		{	
 			cRoom.setRoomPrefab(roomManagerScript);
+			cRoom.setWallPrefab(roomManagerScript);
 		}
 		
 		spawnRooms(dun.getDungeonRooms());

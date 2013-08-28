@@ -12,6 +12,11 @@ public class InitialRoom : ConcreteRoom
 	{
 		this.roomPrefab = roomManagerScript.getRandomInitialRoom();
 	}
+
+	public override void setWallPrefab(RoomManager roomManagerScript)
+	{
+		this.wallPrefab = roomManagerScript.getRoomWall();
+	}
 	
 	public override string ToString()
 	{

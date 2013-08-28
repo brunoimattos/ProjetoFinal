@@ -15,6 +15,11 @@ public class FinalRoom : ConcreteRoom
 		this.roomPrefab = roomManagerScript.getRandomFinalRoom();
 	}
 	
+	public override void setWallPrefab(RoomManager roomManagerScript)
+	{
+		this.wallPrefab = roomManagerScript.getRoomWall();
+	}
+	
 	public override string ToString()
 	{
 		 return "Final Room";

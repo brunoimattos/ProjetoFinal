@@ -8,10 +8,14 @@ public class RoomManager : MonoBehaviour
 	public List<Transform> regularRooms;
 	public List<Transform> initialRooms;
 	public List<Transform> finalRooms;
+	public Transform roomWall;
 		
 	void Awake()
 	{
-		if(regularRooms == null) Debug.LogError("There are no Room Prefabs assigned to the Room Manager!");
+		if(regularRooms == null) Debug.LogError("There are no regularRoom Prefabs assigned to the Room Manager!");
+		if(initialRooms == null) Debug.LogError("There are no initialRoom Prefabs assigned to the Room Manager!");
+		if(finalRooms == null) Debug.LogError("There are no finalRoom Prefabs assigned to the Room Manager!");
+		if(roomWall == null) Debug.LogError("There is no roomWall Prefab assigned to the Room Manager!");
 		
 	}
 	
@@ -31,6 +35,11 @@ public class RoomManager : MonoBehaviour
 	{
 		int i = Random.Range(0, regularRooms.Count);
 		return regularRooms[i];
+	}
+	
+	public Transform getRoomWall()
+	{
+		return roomWall;
 	}
 
 }

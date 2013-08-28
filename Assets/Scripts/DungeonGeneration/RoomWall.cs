@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class RoomWall : MonoBehaviour
+public class RoomWall
 {
-	private Vector2 _Position;
-	private	Vector2 _Measures;
+	private Vector3 _Position;
+	private	Vector3 _Measures;
 	
 	public int x
 	{
@@ -18,6 +18,11 @@ public class RoomWall : MonoBehaviour
 		set { _Position.y = value; }
 	}
 	
+	public int z
+	{
+		get { return (int) _Position.z; }
+		set { _Position.z = value; }
+	}	
 	
 	public int Width
 	{
@@ -30,6 +35,22 @@ public class RoomWall : MonoBehaviour
 	{
 		get { return (int) _Measures.y; }
 		set { _Measures.y = value; }
+	}
+	
+	public int Depth
+	{
+		get { return (int) _Measures.z; }
+		set { _Measures.z = value; }
+	}
+	
+	public Vector3 Position
+	{
+		get { return _Position; }
+	}
+	
+	public Vector3 Measures
+	{
+		get { return _Measures; }
 	}
 		
 }
