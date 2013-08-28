@@ -12,38 +12,41 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	protected Transform roomPrefab;
 	
 	protected Transform wallPrefab;
+		
+	protected RoomWall leftWall = new RoomWall();
+	protected RoomWall rightWall = new RoomWall();
+	protected RoomWall topWall = new RoomWall();
+	protected RoomWall bottomWall = new RoomWall();
 	
-	private RoomWall leftWall, rightWall, topWall, bottomWall;
-	
-	private void setRoomWalls(int RoomX, int RoomY, int RoomWidth, int RoomHeight)
+	protected void setRoomWalls(int RoomX, int RoomY, int RoomWidth, int RoomHeight)
 	{
 		this.leftWall.Width = 1.0f;
-		this.leftWall.Height = RoomHeight;
-		this.leftWall.Depth = 1.0f;
+		this.leftWall.Height = 1.0f;
+		this.leftWall.Depth = RoomHeight;
 		this.leftWall.x = RoomX - (RoomWidth / 2) - (this.leftWall.Width / 2);
-		this.leftWall.y = RoomY;
-		this.leftWall.z = 0.1f;
+		this.leftWall.y = 0.1f;
+		this.leftWall.z = RoomY;
 		
 		this.rightWall.Width = 1.0f;
-		this.rightWall.Height = RoomHeight;
-		this.rightWall.Depth = 1.0f;
+		this.rightWall.Height = 1.0f;
+		this.rightWall.Depth = RoomHeight;
 		this.rightWall.x = RoomX + (RoomWidth / 2) + (this.leftWall.Width / 2);
-		this.rightWall.y = RoomY;
-		this.rightWall.z = 0.1f;
+		this.rightWall.y = 0.1f;
+		this.rightWall.z = RoomY;
 		
 		this.topWall.Width = RoomWidth;
 		this.topWall.Height = 1.0f;
 		this.topWall.Depth = 1.0f;
 		this.topWall.x = RoomX;
-		this.topWall.y = RoomY + (RoomHeight / 2) + (this.leftWall.Height / 2);
-		this.topWall.z = 0.1f;
+		this.topWall.y = 0.1f;
+		this.topWall.z = RoomY + (RoomHeight / 2) + (this.leftWall.Height / 2);
 		
 		this.bottomWall.Width = RoomWidth;
 		this.bottomWall.Height = 1.0f;
 		this.bottomWall.Depth = 1.0f;
 		this.bottomWall.x = RoomX;
-		this.bottomWall.y = RoomY - (RoomHeight / 2) - (this.leftWall.Height / 2);
-		this.bottomWall.z = 0.1f;
+		this.bottomWall.y = 0.1f;
+		this.bottomWall.z = RoomY - (RoomHeight / 2) - (this.leftWall.Height / 2);
 	}
 	
 	public int x
@@ -66,12 +69,7 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	public ConcreteRoom(int x, int y, int width, int height)
 	{
 		this._Position = new Vector2(x, y);
-		leftWall = new RoomWall();
-		rightWall = new RoomWall();
-		topWall = new RoomWall();
-		bottomWall = new RoomWall();
-		setRoomWalls(x,y,width,height);
-			
+		setRoomWalls(x, y, 10,10);
 		//initializeNeighbors(width, height);
 	}
 	

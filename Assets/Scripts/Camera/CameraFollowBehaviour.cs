@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraFollowBehaviour : MonoBehaviour {
 
-	public float cameraHeight = -1.0f;
+	public float cameraHeight = 1.0f;
 	
 	public Transform cameraFocus = null;
 		
@@ -24,6 +24,6 @@ public class CameraFollowBehaviour : MonoBehaviour {
 	
 	void doFollow()
 	{
-		this.transform.position = new Vector3(this.cameraFocus.position.x, this.cameraFocus.position.y, this.cameraFocus.position.z - this.cameraHeight);
+		this.transform.position = new Vector3(this.cameraFocus.position.x, this.cameraFocus.position.y + this.cameraHeight, this.cameraFocus.position.z);
 	}
 }

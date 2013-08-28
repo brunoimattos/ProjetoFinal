@@ -39,11 +39,11 @@ public class CreateDungeon : MonoBehaviour
 		foreach(ConcreteRoom room in createdRooms)
 		{
 			roomPrefab = room.getRoomPrefab();
-			instPosition = new Vector3(roomPrefab.localScale.x * room.x, roomPrefab.localScale.y * room.y, 0);
+			instPosition = new Vector3(roomPrefab.localScale.x * room.x, 0, roomPrefab.localScale.z * room.y);
 			concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
 			
 			leftWallPrefab = room.getWallPrefab();
-			leftWallPosition = new Vector3(leftWallPrefab.localScale.x, leftWallPrefab.localScale.y, leftWallPrefab.localScale.z);
+			leftWallPosition = new Vector3(leftWallPrefab.localScale.x * room.x, leftWallPrefab.localScale.y, leftWallPrefab.localScale.z * room.y);
 			concreteWall = GameObject.Instantiate(leftWallPrefab, leftWallPosition, Quaternion.identity) as Transform;
 		}	
 		

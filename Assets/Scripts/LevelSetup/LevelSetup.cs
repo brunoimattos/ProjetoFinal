@@ -28,7 +28,7 @@ public class LevelSetup : MonoBehaviour {
 	{
 		ConcreteRoom initialRoom = dungeon.getInitialRoom();		
 				
-		player.transform.position = new Vector3(initialRoom.getRoomPrefab().localScale.x * initialRoom.x, initialRoom.getRoomPrefab().localScale.y * initialRoom.y, -1);
+		player.transform.position = new Vector3(initialRoom.getRoomPrefab().localScale.x * initialRoom.x, 1.1f, initialRoom.getRoomPrefab().localScale.z * initialRoom.y);
 	}
 	
 	void Update () {
