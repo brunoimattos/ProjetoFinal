@@ -6,40 +6,40 @@ public class RoomWall
 	private Vector3 _Position;
 	private	Vector3 _Measures;
 	
-	public int x
+	public float x
 	{
-		get { return (int) _Position.x; }
+		get { return _Position.x; }
 		set { _Position.x = value; }
 	}
 	
-	public int y
+	public float y
 	{
-		get { return (int) _Position.y; }
+		get { return _Position.y; }
 		set { _Position.y = value; }
 	}
 	
-	public int z
+	public float z
 	{
-		get { return (int) _Position.z; }
+		get { return _Position.z; }
 		set { _Position.z = value; }
 	}	
 	
-	public int Width
+	public float Width
 	{
-		get { return (int) _Measures.x; }
+		get { return _Measures.x; }
 		set { _Measures.x = value; }
 	}	
 	
 	
-	public int Height
+	public float Height
 	{
-		get { return (int) _Measures.y; }
+		get { return _Measures.y; }
 		set { _Measures.y = value; }
 	}
 	
-	public int Depth
+	public float Depth
 	{
-		get { return (int) _Measures.z; }
+		get { return _Measures.z; }
 		set { _Measures.z = value; }
 	}
 	

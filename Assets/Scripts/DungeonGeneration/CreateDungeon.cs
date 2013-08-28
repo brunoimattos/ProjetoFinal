@@ -43,7 +43,7 @@ public class CreateDungeon : MonoBehaviour
 			concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
 			
 			leftWallPrefab = room.getWallPrefab();
-			leftWallPosition = new Vector3(roomPrefab.localScale.x * room.x, roomPrefab.localScale.y * room.y, 0);
+			leftWallPosition = new Vector3(leftWallPrefab.localScale.x, leftWallPrefab.localScale.y, leftWallPrefab.localScale.z);
 			concreteWall = GameObject.Instantiate(leftWallPrefab, leftWallPosition, Quaternion.identity) as Transform;
 		}	
 		

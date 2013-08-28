@@ -17,33 +17,33 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	
 	private void setRoomWalls(int RoomX, int RoomY, int RoomWidth, int RoomHeight)
 	{
-		this.leftWall.Width = 3;
+		this.leftWall.Width = 1.0f;
 		this.leftWall.Height = RoomHeight;
-		this.leftWall.Depth = 3;
+		this.leftWall.Depth = 1.0f;
 		this.leftWall.x = RoomX - (RoomWidth / 2) - (this.leftWall.Width / 2);
 		this.leftWall.y = RoomY;
-		this.leftWall.z = 0;
+		this.leftWall.z = 0.1f;
 		
-		this.rightWall.Width = 3;
+		this.rightWall.Width = 1.0f;
 		this.rightWall.Height = RoomHeight;
-		this.rightWall.Depth = 3;
+		this.rightWall.Depth = 1.0f;
 		this.rightWall.x = RoomX + (RoomWidth / 2) + (this.leftWall.Width / 2);
 		this.rightWall.y = RoomY;
-		this.rightWall.z = 0;
+		this.rightWall.z = 0.1f;
 		
 		this.topWall.Width = RoomWidth;
-		this.topWall.Height = 3;
-		this.topWall.Depth = 3;
+		this.topWall.Height = 1.0f;
+		this.topWall.Depth = 1.0f;
 		this.topWall.x = RoomX;
 		this.topWall.y = RoomY + (RoomHeight / 2) + (this.leftWall.Height / 2);
-		this.topWall.z = 0;
+		this.topWall.z = 0.1f;
 		
 		this.bottomWall.Width = RoomWidth;
-		this.bottomWall.Height = 3;
-		this.bottomWall.Depth = 3;
+		this.bottomWall.Height = 1.0f;
+		this.bottomWall.Depth = 1.0f;
 		this.bottomWall.x = RoomX;
 		this.bottomWall.y = RoomY - (RoomHeight / 2) - (this.leftWall.Height / 2);
-		this.bottomWall.z = 0;
+		this.bottomWall.z = 0.1f;
 	}
 	
 	public int x
