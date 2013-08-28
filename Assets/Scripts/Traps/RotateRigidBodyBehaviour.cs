@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class RotateBehaviour : MonoBehaviour
+public class RotateRigidBodyBehaviour : MonoBehaviour
 {
 	public float rotationSpeed;
 	public Vector3 rotationAxis;
@@ -16,9 +16,8 @@ public class RotateBehaviour : MonoBehaviour
 	}
 	
 	
-	void Update()
+	void FixedUpdate()
 	{
-		this.transform.RotateAround(rotationAxis, rotationSpeed * Time.deltaTime);
-		
+		this.rigidbody.AddTorque(rotationAxis*rotationSpeed);
 	}
 }
