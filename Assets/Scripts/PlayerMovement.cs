@@ -13,7 +13,9 @@ public class PlayerMovement : MonoBehaviour
 	{
 
 	}
-
+	
+	void FixedUpdate(){}
+	
 	void Update()
 	{
 		doMovement();
