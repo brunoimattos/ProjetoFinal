@@ -20,6 +20,6 @@ public class RotateTransformBehaviour : MonoBehaviour
 	void FixedUpdate()
 	{
 		//World coordinates!
-		this.transform.RotateAround(rotationAxis, rotationSpeed * Time.deltaTime);		
+		this.transform.Rotate(rotationAxis * rotationSpeed * Time.deltaTime);		
 	}
 }
