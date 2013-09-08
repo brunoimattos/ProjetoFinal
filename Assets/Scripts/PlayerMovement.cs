@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 	
 	
-	void Update()
+	void FixedUpdate()
 	{
 		if (doMovement != null)
 		{
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		this.transform.Translate(movement * confusion * playerSpeed * Time.deltaTime);
 		
-		//this.rigidbody.MovePosition( this.transform.position + (movement * playerSpeed * Time.deltaTime));
+		//this.rigidbody.AddForce( this.transform.position + (movement * playerSpeed * Time.deltaTime));
 	}
 	
 	void doAndroidMovement()
