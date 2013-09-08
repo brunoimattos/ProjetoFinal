@@ -6,6 +6,7 @@ public class EmittedParticleBehaviour : MonoBehaviour
 	
 	private ObjectPoolBehaviour obj_pool_api;
 	
+	private Transform parent;
 	private float _lifespan;
 	private float _max_lifespan;
 	public float lifespan
@@ -41,6 +42,8 @@ public class EmittedParticleBehaviour : MonoBehaviour
 		set {this._configured = value; }
 	}
 	
+	private bool _moving = false;
+	
 	void Awake()
 	{
 		renderer.material = set_material_alpha(this.renderer.material, 2);
@@ -52,7 +55,7 @@ public class EmittedParticleBehaviour : MonoBehaviour
 		}
 	}
 		
-	void Update() 
+	void FixedUpdate() 
 	{
 		if(_configured)
 		{
@@ -68,7 +71,13 @@ public class EmittedParticleBehaviour : MonoBehaviour
 			
 			_lifespan -= Time.deltaTime;
 				
-			transform.Translate(_movement_velocity * Time.deltaTime, Space.World);	
+			//transform.Translate(_movement_velocity * Time.deltaTime, Space.World);	
+			if (!_moving)
+			{
+				rigidbody.AddForce(movement_velocity * Time.deltaTime, ForceMode.VelocityChange);
+				_moving = true;
+			}
+			
 						
 		}	
 	}
