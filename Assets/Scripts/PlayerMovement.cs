@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
 				touchDeltaPosition.Normalize();
 			}
 			
-			this.transform.Translate(-touchDeltaPosition.x * playerSpeed * Time.deltaTime, -touchDeltaPosition.y * playerSpeed * Time.deltaTime, 0);
+			this.transform.Translate(-touchDeltaPosition.x * playerSpeed * Time.deltaTime, 0, -touchDeltaPosition.y * playerSpeed * Time.deltaTime);
 		}
 		
 		if (Input.touchCount == 0)
