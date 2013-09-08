@@ -8,6 +8,9 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	public float burst_cooldown = 2.0f;		
 	
 	
+	public enum ParticleEffect{ CONFUSE, DELAY };
+	
+	public ParticleEffect particleEffect;
 	public int particle_count = 2;
 	public float particle_lifespan = 4.0f;
 	public float emission_angle = 30.0f;
@@ -131,28 +134,8 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	
 	private Transform create_particle(Material material, Vector3 position, Quaternion rotation)
 	{
-		/*
-		GameObject particle = GameObject.CreatePrimitive(PrimitiveType.Cube);					
-		_particle_mesh_filter = particle.GetComponent<MeshFilter>();
-		_particle_mesh_filter.mesh = _helper_mesh;		
-		
-		particle.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-		
-		particle.name = "MyParticle";
-		particle.gameObject.AddComponent<EmittedParticleBehaviour>();
-				
-		BoxCollider bx_cl = particle.gameObject.collider as BoxCollider;
-		
-		bx_cl.size = new Vector3(10.0f, 1.0f, 10.0f);
-		
-		particle.renderer.material = material;
-		particle.transform.position = position;
-		particle.transform.localEulerAngles = rotation.eulerAngles;
-		particle.tag = "ConfuseGas";
-		
-		return particle.transform;
-		*/
 		Transform instantiated = GameObject.Instantiate(particle_prefab, position, rotation) as Transform;
 		return instantiated;
 	}
+
 }
