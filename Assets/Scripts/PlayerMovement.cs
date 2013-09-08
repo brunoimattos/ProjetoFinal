@@ -86,7 +86,23 @@ public class PlayerMovement : MonoBehaviour
 		if(col.gameObject.CompareTag("ConfuseGas"))
 		{
 			Destroy(col.gameObject);
+
+			if (GetComponent<ConfusionGasEffect>() == null)
+			{
+				gameObject.AddComponent("ConfusionGasEffect");
+			}
+		}
+	}
+	
+	public void setConfusion(bool confused)
+	{
+		if(confused)
+		{
 			this.confusion = -1;
+		}
+		else
+		{
+			this.confusion = 1;
 		}
 	}
 
