@@ -8,12 +8,15 @@ public class TurretBehaviour : MonoBehaviour
 	public Transform laser_blast;
 	public float reload_cooldown = -1.0f;
 	public float sight_radius = -1.0f;
+	public float shot_speed = -1.0f;
 	public bool is_static; // If the turret is static it fires away without locking on the target.
 	
 	private Transform marty;
 	private bool can_shoot;
 	private float shot_time;
-	private GameObject blast;
+	private Transform blast;
+	
+	private bool can_move = true;
 	
 	
 	void Start()
@@ -44,6 +47,13 @@ public class TurretBehaviour : MonoBehaviour
 		{
 			Debug.LogError("No laser blast. What am I supposed to fire?!");
 		}
+		
+		if(shot_speed < 0.0f)
+		{
+			Debug.LogError("Please set a shot speed!");
+		}
+		
+		can_shoot = true;
 	}
 	
 
@@ -51,57 +61,41 @@ public class TurretBehaviour : MonoBehaviour
 	{	
 		if(marty != null)
 		{
-			/*
-			Vector3 lookPosition = marty.position - transform.position;
-						
-			Quaternion rotation = Quaternion.LookRotation(lookPosition);
-			//rotation.x = 0;
-			//rotation.y = 0;
-			//rotation.z = 0;
-			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5.0f);
-			*/
-			
-			if (!is_static)
+			if(is_static)
 			{
-				doLockOn();
+				doShoot();	
 			}
 			else
 			{
-				doCooldownTimer();
+				doLockOn();
 			}
 		}
 		
+		
 	}
 	
+	IEnumerator doCooldown(float cooldownTime)
+	{
+		Debug.Log("Waiting..." + cooldownTime);
+		yield return new WaitForSeconds(cooldownTime);
+		Debug.Log("Done Waiting...");
+		can_shoot = true;
+	}
+
 	void doLockOn()
 	{
-		if( marty != null && Vector3.Distance(marty.transform.position, this.transform.position) <= sight_radius)
+		if( marty != null && Vector3.Distance(marty.transform.position, turret_muzzle.transform.position) <= sight_radius)
 		{
 			RaycastHit hit;
 			
-			if(Physics.Raycast(transform.position, this.transform.forward, out hit, sight_radius))
+			Debug.DrawRay(turret_muzzle.transform.position, transform.forward * sight_radius, Color.yellow, 4);
+			if(Physics.Raycast(turret_muzzle.transform.position, transform.forward, out hit, sight_radius))
 			{
-				if(hit.collider.gameObject.CompareTag("Player"))
-				{
-					doCooldownTimer();
-				}
+				doShoot();
 			}
 			
-			this.transform.LookAt(marty.transform.position);
-		}
-	}
-	
-	void doCooldownTimer()
-	{
-		if(Time.time > shot_time)
-		{
-			can_shoot = true;
-			doShoot();
-			shot_time = Time.time + reload_cooldown;
-		}
-		else
-		{
-			can_shoot = false;
+			this.transform.LookAt(marty.transform.position);	
+			
 		}
 	}
 	
@@ -109,12 +103,20 @@ public class TurretBehaviour : MonoBehaviour
 	{
 		if(can_shoot)
 		{
-			blast = GameObject.Instantiate(laser_blast, this.turret_muzzle.transform.position, this.transform.rotation) as GameObject;
+			can_move = false;
+			Debug.Log("Pew!");
+			blast = GameObject.Instantiate(laser_blast, turret_muzzle.position, Quaternion.identity) as Transform;
 			
-			// FIXME: Velocidade do tiro hard coded?!
-			blast.gameObject.rigidbody.velocity = this.transform.forward * 50;
-			//FIXME: Criar o script LaserBehaviour
-			//blast.GetComponent<LaserBehaviour>().setOrigin(turet_muzzle.transform.position);
+			foreach(Transform child in transform)
+			{
+				Debug.Log("CHild name: " + child.name);
+				Physics.IgnoreCollision(child.collider, blast.collider);
+			}
+
+			blast.gameObject.rigidbody.velocity = turret_muzzle.transform.forward * shot_speed;
+			blast.GetComponent<TurretLaserBehaviour>().setOrigin(turret_muzzle.transform.position);
+			can_shoot = false;
+			StartCoroutine(doCooldown(reload_cooldown));
 		}
 	}
 }
