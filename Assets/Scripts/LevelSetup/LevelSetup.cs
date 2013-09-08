@@ -13,22 +13,35 @@ public class LevelSetup : MonoBehaviour {
 	
 	
 	void Start () {
+		CameraBehaviour mainCameraBehaviour;
+		
+		mainCameraBehaviour = Camera.main.GetComponent<CameraBehaviour>();
+		
 		if(DungeonCreator == null) Debug.LogError("No Dungeon Creator assigned.");
 		
 		if(Player_Marty == null) Debug.LogError("No Player assigned.");
 		
+		if(mainCameraBehaviour == null) Debug.LogError("No camera assigned.");
+		
 		dungeon = DungeonCreator.GetComponent<CreateDungeon>().MakeDungeon();
 		
-		placePlayer(Player_Marty, dungeon);
+		
+		placePlayerAndCamera(Player_Marty, dungeon, mainCameraBehaviour);
 		
 	}
 	
 	
-	private void placePlayer(Transform player, Dungeon dungeon)
+	private void placePlayerAndCamera(Transform player, Dungeon dungeon, CameraBehaviour mainCameraBehaviour)
 	{
+		Vector3 initialPosition;
+		
 		ConcreteRoom initialRoom = dungeon.getInitialRoom();		
+		
+		
+		initialPosition = new Vector3(initialRoom.getRoomPrefab().localScale.x * initialRoom.x, 1.1f, initialRoom.getRoomPrefab().localScale.z * initialRoom.y);
+		mainCameraBehaviour.setInitialPosition(initialPosition);
 				
-		player.transform.position = new Vector3(initialRoom.getRoomPrefab().localScale.x * initialRoom.x, 1.1f, initialRoom.getRoomPrefab().localScale.z * initialRoom.y);
+		player.transform.position = initialPosition;
 	}
 	
 	void Update () {
@@ -37,10 +50,13 @@ public class LevelSetup : MonoBehaviour {
 	
 	void OnGUI()
 	{
+		CameraBehaviour mainCameraBehaviour;
+		
 		if(GUI.Button(new Rect(0, 0, 100, 50), "Gerar de Novo"))
 		{
+			mainCameraBehaviour = Camera.main.GetComponent<CameraBehaviour>();
 			dungeon = DungeonCreator.GetComponent<CreateDungeon>().generateNewDungeon();
-			placePlayer(Player_Marty, dungeon);
+			placePlayerAndCamera(Player_Marty, dungeon, mainCameraBehaviour);
 		}
 	}
 }

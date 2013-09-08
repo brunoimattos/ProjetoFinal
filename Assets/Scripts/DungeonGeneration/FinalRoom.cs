@@ -17,7 +17,10 @@ public class FinalRoom : ConcreteRoom
 	
 	public override void setWallPrefab(RoomManager roomManagerScript)
 	{
-		this.wallPrefab = roomManagerScript.getRoomWall();
+		this.leftWallPrefab = roomManagerScript.getRoomWall();
+		this.rightWallPrefab = roomManagerScript.getRoomWall();
+		this.topWallPrefab = roomManagerScript.getRoomWall();
+		this.bottomWallPrefab = roomManagerScript.getRoomWall();
 	}
 	
 	public override string ToString()

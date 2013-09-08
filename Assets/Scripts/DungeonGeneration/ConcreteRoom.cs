@@ -11,42 +11,45 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	
 	protected Transform roomPrefab;
 	
-	protected Transform wallPrefab;
+	protected Transform leftWallPrefab;
+	protected Transform rightWallPrefab;
+	protected Transform topWallPrefab;
+	protected Transform bottomWallPrefab;
 		
 	protected RoomWall leftWall = new RoomWall();
 	protected RoomWall rightWall = new RoomWall();
 	protected RoomWall topWall = new RoomWall();
 	protected RoomWall bottomWall = new RoomWall();
 	
-	protected void setRoomWalls(int RoomX, int RoomY, int RoomWidth, int RoomHeight)
+	protected void setRoomWalls(int gridX, int gridY, int RoomWidth, int RoomHeight)
 	{
 		this.leftWall.Width = 1.0f;
 		this.leftWall.Height = 1.0f;
 		this.leftWall.Depth = RoomHeight;
-		this.leftWall.x = RoomX - (RoomWidth / 2) - (this.leftWall.Width / 2);
-		this.leftWall.y = 0.1f;
-		this.leftWall.z = RoomY;
+		this.leftWall.x = gridX * RoomWidth - (RoomWidth/2);
+		this.leftWall.y = 1.0f;
+		this.leftWall.z = gridY * RoomHeight;
 		
 		this.rightWall.Width = 1.0f;
 		this.rightWall.Height = 1.0f;
 		this.rightWall.Depth = RoomHeight;
-		this.rightWall.x = RoomX + (RoomWidth / 2) + (this.leftWall.Width / 2);
-		this.rightWall.y = 0.1f;
-		this.rightWall.z = RoomY;
+		this.rightWall.x = (gridX * RoomWidth) + (RoomWidth / 2);
+		this.rightWall.y = 1.0f;
+		this.rightWall.z = gridY * RoomHeight;
 		
 		this.topWall.Width = RoomWidth;
 		this.topWall.Height = 1.0f;
 		this.topWall.Depth = 1.0f;
-		this.topWall.x = RoomX;
-		this.topWall.y = 0.1f;
-		this.topWall.z = RoomY + (RoomHeight / 2) + (this.leftWall.Height / 2);
+		this.topWall.x = gridX * RoomWidth;
+		this.topWall.y = 1.0f;
+		this.topWall.z = (gridY * RoomHeight) + (RoomHeight / 2);
 		
 		this.bottomWall.Width = RoomWidth;
 		this.bottomWall.Height = 1.0f;
 		this.bottomWall.Depth = 1.0f;
-		this.bottomWall.x = RoomX;
-		this.bottomWall.y = 0.1f;
-		this.bottomWall.z = RoomY - (RoomHeight / 2) - (this.leftWall.Height / 2);
+		this.bottomWall.x = gridX * RoomWidth;
+		this.bottomWall.y = 1.0f;
+		this.bottomWall.z = (gridY * RoomHeight) - (RoomHeight / 2);
 	}
 	
 	public int x
@@ -69,7 +72,7 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	public ConcreteRoom(int x, int y, int width, int height)
 	{
 		this._Position = new Vector2(x, y);
-		setRoomWalls(x, y, 10,10);
+		setRoomWalls(x, y, 20, 10);
 		//initializeNeighbors(width, height);
 	}
 	
@@ -85,15 +88,42 @@ public class ConcreteRoom : IEquatable<ConcreteRoom>
 	
 	public virtual void setWallPrefab(RoomManager roomManagerScript)
 	{
-		this.wallPrefab = roomManagerScript.getRoomWall();
+		this.leftWallPrefab = roomManagerScript.getRoomWall();
+		this.rightWallPrefab = roomManagerScript.getRoomWall();
+		this.topWallPrefab = roomManagerScript.getRoomWall();
+		this.bottomWallPrefab = roomManagerScript.getRoomWall();
 	}
 	
-	public Transform getWallPrefab()
+	public Transform getLeftWallPrefab()
 	{
-		this.wallPrefab.localScale = this.leftWall.Measures;
-		this.wallPrefab.localPosition = this.leftWall.Position;
+		this.leftWallPrefab.localScale = this.leftWall.Measures;
+		this.leftWallPrefab.position = this.leftWall.Position;
 		
-		return this.wallPrefab;
+		return this.leftWallPrefab;
+	}
+	
+	public Transform getRightWallPrefab()
+	{
+		this.rightWallPrefab.localScale = this.rightWall.Measures;
+		this.rightWallPrefab.position = this.rightWall.Position;
+		
+		return this.rightWallPrefab;
+	}
+	
+	public Transform getTopWallPrefab()
+	{
+		this.topWallPrefab.localScale = this.topWall.Measures;
+		this.topWallPrefab.position = this.topWall.Position;
+		
+		return this.topWallPrefab;
+	}
+	
+	public Transform getBottomWallPrefab()
+	{
+		this.bottomWallPrefab.localScale = this.bottomWall.Measures;
+		this.bottomWallPrefab.position = this.bottomWall.Position;
+		
+		return this.bottomWallPrefab;
 	}
 	
 	public bool Equals(ConcreteRoom other)
