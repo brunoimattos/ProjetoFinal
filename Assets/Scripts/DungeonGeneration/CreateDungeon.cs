@@ -31,9 +31,8 @@ public class CreateDungeon : MonoBehaviour
 	{
 		Transform roomPrefab;
 		Transform concreteRoom;
-		Transform leftWallPrefab;
+		Transform tempWallPrefab;
 		Transform concreteWall;
-		Vector3	leftWallPosition;
 		Vector3 instPosition;
 		
 		foreach(ConcreteRoom room in createdRooms)
@@ -42,9 +41,20 @@ public class CreateDungeon : MonoBehaviour
 			instPosition = new Vector3(roomPrefab.localScale.x * room.x, 0, roomPrefab.localScale.z * room.y);
 			concreteRoom = GameObject.Instantiate(roomPrefab, instPosition, Quaternion.identity) as Transform;
 			
-			leftWallPrefab = room.getWallPrefab();
-			leftWallPosition = new Vector3(leftWallPrefab.localScale.x * room.x, leftWallPrefab.localScale.y, leftWallPrefab.localScale.z * room.y);
-			concreteWall = GameObject.Instantiate(leftWallPrefab, leftWallPosition, Quaternion.identity) as Transform;
+			tempWallPrefab = room.getLeftWallPrefab();
+			concreteWall = GameObject.Instantiate(tempWallPrefab, tempWallPrefab.position, Quaternion.identity) as Transform;
+			
+			tempWallPrefab = room.getRightWallPrefab();
+			concreteWall = GameObject.Instantiate(tempWallPrefab, tempWallPrefab.position, Quaternion.identity) as Transform;
+
+			tempWallPrefab = room.getTopWallPrefab();
+			concreteWall = GameObject.Instantiate(tempWallPrefab, tempWallPrefab.position, Quaternion.identity) as Transform;
+			
+			tempWallPrefab = room.getBottomWallPrefab();
+			concreteWall = GameObject.Instantiate(tempWallPrefab, tempWallPrefab.position, Quaternion.identity) as Transform;
+
+
+
 		}	
 		
 		if(pivotPrefab != null)

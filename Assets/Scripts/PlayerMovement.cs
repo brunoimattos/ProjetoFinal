@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 	
 	
-	void Update()
+	void FixedUpdate()
 	{
 		if (doMovement != null)
 		{
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		this.transform.Translate(movement * confusion * playerSpeed * Time.deltaTime);
 		
-		//this.rigidbody.MovePosition( this.transform.position + (movement * playerSpeed * Time.deltaTime));
+		//this.rigidbody.AddForce( this.transform.position + (movement * playerSpeed * Time.deltaTime));
 	}
 	
 	void doAndroidMovement()
@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
 				touchDeltaPosition.Normalize();
 			}
 			
-			this.transform.Translate(-touchDeltaPosition.x * playerSpeed * Time.deltaTime, -touchDeltaPosition.y * playerSpeed * Time.deltaTime, 0);
+			this.transform.Translate(-touchDeltaPosition.x * playerSpeed * Time.deltaTime, 0, -touchDeltaPosition.y * playerSpeed * Time.deltaTime);
 		}
 		
 		if (Input.touchCount == 0)
