@@ -10,6 +10,7 @@ public class ResourceManager : MonoBehaviour {
 	public List<Transform> regularRooms;
 	public List<Transform> initialRooms;
 	public List<Transform> finalRooms;
+
 		
 	void Awake()
 	{
@@ -35,5 +36,21 @@ public class ResourceManager : MonoBehaviour {
 	{
 		int i = Random.Range(0, regularRooms.Count);
 		return regularRooms[i];
+	}
+
+	public Texture2D getTextureByName(string textureName)
+	{
+		foreach(Texture2D texture in Textures)
+		{
+			if(texture.name == textureName)
+				return texture;
+		}
+
+		return null;
+	}
+
+	public Texture2D getTextureByIndex(int idx)
+	{
+		return Textures[idx];
 	}
 }
