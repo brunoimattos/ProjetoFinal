@@ -17,13 +17,28 @@ public class GameRoom : MonoBehaviour {
 		}
 		else doorWest.SetActive(true);
 		
-		if (room.IsConnectedTo(room.GetRight())) doorEast.SetActive(false);
+		if (room.IsConnectedTo(room.GetRight()))
+		{
+			//doorEast.SetActive(false);
+			doorEast.collider.isTrigger = true;
+			doorEast.renderer.enabled = false;
+		}
 		else doorEast.SetActive(true);
 		
-		if (room.IsConnectedTo(room.GetTop())) doorNorth.SetActive(false);
+		if (room.IsConnectedTo(room.GetTop()))
+		{
+			//doorNorth.SetActive(false);
+			doorNorth.collider.isTrigger = true;
+			doorNorth.renderer.enabled = false;
+		}
 		else doorNorth.SetActive(true);
 		
-		if (room.IsConnectedTo(room.GetBottom())) doorSouth.SetActive(false);
+		if (room.IsConnectedTo(room.GetBottom()))
+		{
+			//doorSouth.SetActive(false);
+			doorSouth.collider.isTrigger = true;
+			doorSouth.renderer.enabled = false;
+		}
 		else doorSouth.SetActive(true);
 	}
 	

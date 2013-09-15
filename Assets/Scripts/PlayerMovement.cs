@@ -63,8 +63,6 @@ public class PlayerMovement : MonoBehaviour
 	
 	void OnCollisionEnter(Collision col)
 	{	
-		Debug.Log("Hit by: " + col.gameObject.tag);
-
 		if(col.gameObject.CompareTag("Trap"))
 		{
 			Application.LoadLevel("workshop");
@@ -92,5 +90,11 @@ public class PlayerMovement : MonoBehaviour
 		{
 			this.confusion = 1;
 		}
+	}
+	
+	public void snapToPosition(Vector3 toPosition)
+	{
+		Debug.Log("FromPosition: " + transform.position + " ToPosition: " + toPosition);
+		this.transform.position = new Vector3(toPosition.x, this.transform.position.y, toPosition.z);
 	}
 }
