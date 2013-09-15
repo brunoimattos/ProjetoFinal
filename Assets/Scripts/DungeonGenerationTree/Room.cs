@@ -3,20 +3,38 @@ using System.Collections;
 
 public class Room
 {
-	public int x;
-	public int y;
+	public int x, y;
 	public Room parent;
 	public Room child1, child2;
+	private float width, height;
 	private TreeDungeon dungeon;
 	
 	private static int MAX_TRIES = 2;
 	
-	public Room(Room _parent, int _x, int _y)
+	public Room(Room _parent, int _x, int _y, float _width, float _height)
 	{
 		parent = _parent;
 		x = _x;
 		y = _y;
+		width = _width;
+		height = _height;
 		dungeon = TreeDungeon.instance;
+	}
+	
+	public float worldX
+	{
+		get
+		{
+			return x * width;	
+		}
+	}
+	
+	public float worldZ
+	{
+		get
+		{
+			return y * height;	
+		}
 	}
 	
 	public bool IsFirstNode()
@@ -55,10 +73,10 @@ public class Room
 	
 	public Room AddChild(int direction)
 	{
-		if (direction == 0) return dungeon.AddRoom(this,x-1,y); // Left
-		if (direction == 1) return dungeon.AddRoom(this,x+1,y); // Right
-		if (direction == 2) return dungeon.AddRoom(this,x,y+1); // Top
-		if (direction == 3) return dungeon.AddRoom(this,x,y-1); // Bottom
+		if (direction == 0) return dungeon.AddRoom(this,x-1,y, width, height); // Left
+		if (direction == 1) return dungeon.AddRoom(this,x+1,y, width, height); // Right
+		if (direction == 2) return dungeon.AddRoom(this,x,y+1, width, height); // Top
+		if (direction == 3) return dungeon.AddRoom(this,x,y-1, width, height); // Bottom
 		return null;
 	}
 	

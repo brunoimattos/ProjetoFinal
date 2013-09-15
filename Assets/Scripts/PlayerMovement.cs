@@ -91,4 +91,10 @@ public class PlayerMovement : MonoBehaviour
 			this.confusion = 1;
 		}
 	}
+	
+	public void snapToPosition(Vector3 toPosition)
+	{
+		Debug.Log("FromPosition: " + transform.position + " ToPosition: " + toPosition);
+		this.transform.position = new Vector3(toPosition.x, this.transform.position.y, toPosition.z);
+	}
 }

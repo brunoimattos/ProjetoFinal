@@ -74,7 +74,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		int roomX = Random.Range (0, DUNGEON_SIZE_X);
 		int roomY = Random.Range (0, DUNGEON_SIZE_Y);
 		
-		Room firstRoom = AddRoom(null, roomX,roomY); // null parent because it's the first node
+		Room firstRoom = AddRoom(null, roomX,roomY, ROOM_SIZE_X, ROOM_SIZE_Z); // null parent because it's the first node
 		
 		// Generate childrens
 		firstRoom.GenerateChildren();
@@ -95,16 +95,12 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		foreach (Room room in rooms)
 		{
 			if (room == null) continue;
-			
-			// Real world position
-			float worldX = room.x * ROOM_SIZE_X;
-			float worldZ = room.y * ROOM_SIZE_Z;
-			
+						
 			Transform instRoom = resourceApi.getRandomRegularRoom();
 			
 			//Debug.Log("Nome sala: " + instRoom.name);
 			
-			Transform g = GameObject.Instantiate(instRoom, new Vector3(worldX,0,worldZ),Quaternion.identity) as Transform;
+			Transform g = GameObject.Instantiate(instRoom, new Vector3(room.worldX,0,room.worldZ),Quaternion.identity) as Transform;
 			
 			// Add the room info to the GameObject main script
 			GameRoom gameRoom = g.gameObject.GetComponent<GameRoom>();
@@ -122,9 +118,9 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	// Helper Methods
 	
 	
-	public Room AddRoom(Room parent, int x, int y)
+	public Room AddRoom(Room parent, int x, int y, float width, float height)
 	{
-		Room room = new Room(parent, x, y);
+		Room room = new Room(parent, x, y, width, height);
 		rooms[x,y] = room;
 		nRooms++;
 		return room;
