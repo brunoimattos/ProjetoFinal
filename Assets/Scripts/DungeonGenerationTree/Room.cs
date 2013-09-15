@@ -67,26 +67,27 @@ public class Room
 		if (num_tries > MAX_TRIES) return -1;
 		
 		int direction = Random.Range(0,4);
-		if (direction == 0) // Left
+		
+		switch (direction)
 		{
-			if (x == 0) return GetValidDirection(num_tries+1);
-			if (GetLeft() != null) return GetValidDirection(num_tries+1);
+			case 0: // Left
+				if (x == 0) return GetValidDirection(num_tries+1);
+				if (GetLeft() != null) return GetValidDirection(num_tries+1);
+				break;
+			case 1: // Right
+				if (x >= dungeon.DUNGEON_SIZE_X - 1) return GetValidDirection(num_tries+1);
+				if (GetRight() != null) return GetValidDirection(num_tries+1);
+				break;
+			case 2: // Top
+				if (y >= dungeon.DUNGEON_SIZE_Y - 1) return GetValidDirection(num_tries+1);
+				if (GetTop() != null) return GetValidDirection(num_tries+1);	
+				break;
+			case 3: // Bottom
+				if (y == 0) return GetValidDirection(num_tries++);
+				if (GetBottom() != null) return GetValidDirection(num_tries+1);
+				break;
 		}
-		else if (direction == 1) // Right
-		{
-			if (x >= dungeon.DUNGEON_SIZE_X - 1) return GetValidDirection(num_tries+1);
-			if (GetRight() != null) return GetValidDirection(num_tries+1);
-		}
-		else if (direction == 2) // Top
-		{
-			if (y >= dungeon.DUNGEON_SIZE_Y - 1) return GetValidDirection(num_tries+1);
-			if (GetTop() != null) return GetValidDirection(num_tries+1);
-		}
-		else if (direction == 3) // Bottom
-		{
-			if (y == 0) return GetValidDirection(num_tries++);
-			if (GetBottom() != null) return GetValidDirection(num_tries+1);
-		}
+		
 		return direction;
 	}
 	
