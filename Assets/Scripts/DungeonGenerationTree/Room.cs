@@ -165,4 +165,9 @@ public class Room
 		if (GetRight() == null && x < dungeon.DUNGEON_SIZE_X - 1) n++;
 		return n;
 	}
+	
+	public string ToString()
+	{
+		return "X: " + x + ", " + "Y:" + y;
+	}
 }

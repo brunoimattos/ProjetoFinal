@@ -83,7 +83,6 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		
 		if((nRooms < 5) || (nRooms > (int)(0.8f * DUNGEON_SIZE_X * DUNGEON_SIZE_Y)))
 		{
-			Debug.Log("Too much or Too many Rooms: " + nRooms);
 			nRooms = 0;
 			GenerateDungeon();
 		}

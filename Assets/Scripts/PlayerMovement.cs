@@ -63,8 +63,6 @@ public class PlayerMovement : MonoBehaviour
 	
 	void OnCollisionEnter(Collision col)
 	{	
-		Debug.Log("Hit by: " + col.gameObject.tag);
-
 		if(col.gameObject.CompareTag("Trap"))
 		{
 			Application.LoadLevel("workshop");
