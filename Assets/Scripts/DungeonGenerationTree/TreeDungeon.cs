@@ -4,8 +4,8 @@ using System.Collections;
 public class TreeDungeon : MonoSingleton<TreeDungeon> 
 {
 	// Dungeon Rooms
-	public int DUNGEON_SIZE_X = 20;
-	public int DUNGEON_SIZE_Y = 20;
+	public int DUNGEON_SIZE_X = 10;
+	public int DUNGEON_SIZE_Y = 10;
 	
 	// Size of 3D Model Prefab in World Space
 	public int ROOM_SIZE_X = 14; 
@@ -17,35 +17,33 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	// Room structure
 	public Room[,] rooms;
 	
-	// Pointer to Boss Room "Demo" GameObject
-	private GameObject bossRoom;
+	private GameObject initialRoom;
 	
 	private int nRooms = 0;
 	
-	private TreeRoomManager roomManagerApi;
+	private ResourceManager resourceApi;
 	
 	private GameObject marty;
 	
 	public override void Init () 
 	{
-		roomManagerApi = GameObject.FindGameObjectWithTag("RoomManager").GetComponent<TreeRoomManager>();
+		resourceApi = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
 		
 		marty = GameObject.FindGameObjectWithTag("Player");
 		
 		
 		GenerateDungeon();
 		GenerateGameRooms();
-		// Camera looking at Boss Room for the demo
 		
 		setPlayerAndCamera();
 	}
 	
 	void setPlayerAndCamera()
 	{
-		Camera.main.transform.position = new Vector3(bossRoom.transform.position.x, 10.0f, bossRoom.transform.position.z);
+		Camera.main.transform.position = new Vector3(initialRoom.transform.position.x, 10.0f, initialRoom.transform.position.z);
 		
 		//FIXME: Tirar o hard coded.
-		marty.transform.position = new Vector3(bossRoom.transform.position.x, bossRoom.transform.position.y + 1.1f, bossRoom.transform.position.z);
+		marty.transform.position = new Vector3(initialRoom.transform.position.x, initialRoom.transform.position.y + 1.1f, initialRoom.transform.position.z);
 	}
 	
 	void Update () 
@@ -103,20 +101,20 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			float worldX = room.x * ROOM_SIZE_X;
 			float worldZ = room.y * ROOM_SIZE_Z;
 			
-			Transform instRoom = roomManagerApi.getRandomRegularRoom();
+			Transform instRoom = resourceApi.getRandomRegularRoom();
 			
 			//Debug.Log("Nome sala: " + instRoom.name);
 			
 			Transform g = GameObject.Instantiate(instRoom, new Vector3(worldX,0,worldZ),Quaternion.identity) as Transform;
 			
-			// Add the room info to the GameObject main script (Demo)
+			// Add the room info to the GameObject main script
 			GameRoom gameRoom = g.gameObject.GetComponent<GameRoom>();
 			gameRoom.room = room;
 			
 			if (room.IsFirstNode()) 
 			{
-				bossRoom = g.gameObject;
-				g.name = "Boss Room";
+				initialRoom = g.gameObject;
+				g.name = "Initial Room";
 			}
 			else g.name = "Room " + room.x + " " + room.y;
 		}

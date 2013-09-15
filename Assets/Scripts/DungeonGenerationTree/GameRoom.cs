@@ -9,7 +9,12 @@ public class GameRoom : MonoBehaviour {
 	void Start () 
 	{
 		// Remove walls if connected
-		if (room.IsConnectedTo(room.GetLeft())) doorWest.SetActive(false);
+		if (room.IsConnectedTo(room.GetLeft()))
+		{
+			//doorWest.SetActive(false);
+			doorWest.collider.isTrigger = true;
+			doorWest.renderer.enabled = false;
+		}
 		else doorWest.SetActive(true);
 		
 		if (room.IsConnectedTo(room.GetRight())) doorEast.SetActive(false);
