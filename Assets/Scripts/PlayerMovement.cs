@@ -22,8 +22,8 @@ public class PlayerMovement : MonoBehaviour
 			doMovement += doPCMovement;
 		#endif
 	}
-	
-	
+
+
 	void FixedUpdate()
 	{
 		if (doMovement != null)
@@ -61,22 +61,10 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 	
-	
-	/*void OnTriggerStay(Collider collider)
-	{
-		if(collider.gameObject.CompareTag("Trap"))
-		{
-			Debug.Log("LOL, I'm dead!");	
-		}
-	}*/
-	
 	void OnCollisionEnter(Collision col)
 	{	
 		Debug.Log("Hit by: " + col.gameObject.tag);
-		
-		//Na colisao com o gas confusao: setar confusion pra -1 por confusion_cooldown segundos
-		
-		//Na colisao com o gas delay: testar guardar numa lista as teclas apertadas e depois de cooldown segundos tirar uma executar
+
 		if(col.gameObject.CompareTag("Trap"))
 		{
 			Application.LoadLevel("workshop");
@@ -105,8 +93,4 @@ public class PlayerMovement : MonoBehaviour
 			this.confusion = 1;
 		}
 	}
-
-	
-	
-	
 }
