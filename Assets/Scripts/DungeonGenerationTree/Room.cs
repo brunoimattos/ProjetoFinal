@@ -6,6 +6,7 @@ public class Room
 	public int x, y;
 	public Room parent;
 	public Room child1, child2;
+	private Transform roomTransform;
 	private float width, height;
 	private TreeDungeon dungeon;
 	
@@ -19,6 +20,23 @@ public class Room
 		width = _width;
 		height = _height;
 		dungeon = TreeDungeon.instance;
+	}
+	
+	public void setRoomTransform(Transform transform)
+	{
+		roomTransform = transform;
+	}
+	
+	public void setActiveTrap(bool active)
+	{
+		Transform traps = roomTransform.Find("Traps");
+		if (traps != null)
+		{
+			foreach(Transform trap in traps)
+			{
+				trap.gameObject.SetActive(active);
+			}
+		}
 	}
 	
 	public float worldX

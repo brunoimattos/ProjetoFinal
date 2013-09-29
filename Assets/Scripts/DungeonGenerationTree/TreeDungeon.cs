@@ -11,9 +11,6 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	public int ROOM_SIZE_X = 14; 
 	public int ROOM_SIZE_Z = 9;
 	
-	// Demo Room Prefab
-	//public GameObject RoomBasicPrefab; 
-	
 	// Room structure
 	public Room[,] rooms;
 	
@@ -34,6 +31,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		
 		GenerateDungeon();
 		GenerateGameRooms();
+		GenerateGameTraps();
 		
 		setPlayerAndCamera();
 	}
@@ -43,7 +41,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		Camera.main.transform.position = new Vector3(initialRoom.transform.position.x, 10.0f, initialRoom.transform.position.z);
 		
 		//FIXME: Tirar o hard coded.
-		marty.transform.position = new Vector3(initialRoom.transform.position.x, initialRoom.transform.position.y + 1.1f, initialRoom.transform.position.z);
+		marty.transform.position = new Vector3(initialRoom.transform.position.x, initialRoom.transform.position.y + 0.9f, initialRoom.transform.position.z);
 	}
 	
 	void Update () 
@@ -56,13 +54,21 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	
 	public void RegenerateDungeon()
 	{
-		foreach(GameObject room in GameObject.FindGameObjectsWithTag("Room"))
-		{
+		foreach(GameObject room in GameObject.FindGameObjectsWithTag("InitialRoom"))
 			Destroy(room);
-		}
+		foreach(GameObject room in GameObject.FindGameObjectsWithTag("TrapRoom"))
+			Destroy(room);
+		foreach(GameObject room in GameObject.FindGameObjectsWithTag("FinalRoom"))
+			Destroy(room);
+		
+		Destroy(initialRoom);
 		nRooms = 0;
+		
 		GenerateDungeon();
 		GenerateGameRooms();
+		GenerateGameTraps();
+		
+		setPlayerAndCamera();
 	}
 	
 	public void GenerateDungeon()
@@ -74,12 +80,12 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		int roomX = Random.Range (0, DUNGEON_SIZE_X);
 		int roomY = Random.Range (0, DUNGEON_SIZE_Y);
 		
-		Room firstRoom = AddRoom(null, roomX,roomY, ROOM_SIZE_X, ROOM_SIZE_Z); // null parent because it's the first node
+		Room firstRoom = AddRoom(null, roomX,roomY, ROOM_SIZE_X, ROOM_SIZE_Z); // null parent (first node)
 		
 		// Generate childrens
 		firstRoom.GenerateChildren();
 		
-		Debug.Log("# rooms: " + nRooms);
+		//Debug.Log("# rooms: " + nRooms);
 		
 		if((nRooms < 5) || (nRooms > (int)(0.8f * DUNGEON_SIZE_X * DUNGEON_SIZE_Y)))
 		{
@@ -91,33 +97,68 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	
 	void GenerateGameRooms()
 	{
+		Transform instRoom;
+		bool finalRoomCreated = false;
+		string roomTag = "";
+		
 		// For each room in our matrix generate a 3D Model from Prefab
 		foreach (Room room in rooms)
 		{
 			if (room == null) continue;
-						
-			Transform instRoom = resourceApi.getRandomRegularRoom();
 			
-			//Debug.Log("Nome sala: " + instRoom.name);
+			if (room.IsFirstNode()) // if Initial Room
+			{
+				instRoom = resourceApi.getRandomInitialRoom();
+				roomTag = "InitialRoom";
+			} else if (!room.HasChildren() && !finalRoomCreated) // if Final Room
+			{
+				instRoom = resourceApi.getRandomFinalRoom();
+				finalRoomCreated = true;
+				roomTag = "FinalRoom";
+			} else // if Trap Room
+			{
+				instRoom = resourceApi.getRandomTrapRoom();
+				roomTag = "TrapRoom";
+			}
 			
 			Transform g = GameObject.Instantiate(instRoom, new Vector3(room.worldX,0,room.worldZ),Quaternion.identity) as Transform;
+			room.setRoomTransform(g);
 			
 			// Add the room info to the GameObject main script
 			GameRoom gameRoom = g.gameObject.GetComponent<GameRoom>();
 			gameRoom.room = room;
+			g.tag = roomTag;
 			
 			if (room.IsFirstNode()) 
 			{
 				initialRoom = g.gameObject;
-				g.name = "Initial Room";
 			}
-			else g.name = "Room " + room.x + " " + room.y;
+			g.name = "Room: " + room.x + " " + room.y;
 		}
 	}
 	
-	// Helper Methods
-	
-	
+	public void GenerateGameTraps()
+	{
+		Transform instTrap;
+		Transform t;
+		Room room;
+		GameObject traps;
+		
+		foreach(GameObject gameRoom in GameObject.FindGameObjectsWithTag("TrapRoom"))
+		{
+			room = gameRoom.gameObject.GetComponent<GameRoom>().room;
+			instTrap = resourceApi.getRandomTrap();
+			
+			traps = new GameObject("Traps");
+			traps.transform.parent = gameRoom.transform;
+			
+			t = GameObject.Instantiate(instTrap, new Vector3(room.worldX,1.1f,room.worldZ),Quaternion.identity) as Transform;
+			t.transform.parent = traps.transform;
+			
+			t.gameObject.SetActive(false);
+		}
+	}
+		
 	public Room AddRoom(Room parent, int x, int y, float width, float height)
 	{
 		Room room = new Room(parent, x, y, width, height);

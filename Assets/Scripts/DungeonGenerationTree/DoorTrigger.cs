@@ -11,6 +11,7 @@ public class DoorTrigger : MonoBehaviour
 			Vector3 nextRoomPosition = Vector3.zero;
 			Vector3 nextPlayerPosition = Vector3.zero;
 			Room roomApi = transform.parent.GetComponent<GameRoom>().room;
+			Room nextRoom = null;
 			float worldX;
 			float worldZ;
 			switch (this.gameObject.transform.name.ToUpper()) {
@@ -21,6 +22,8 @@ public class DoorTrigger : MonoBehaviour
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
 					nextPlayerPosition = nextRoomPosition + Vector3.forward * (-(transform.parent.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 1);
+				
+					nextRoom = roomApi.GetTop();
 					
 					break;
 				
@@ -32,6 +35,8 @@ public class DoorTrigger : MonoBehaviour
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
 					nextPlayerPosition = nextRoomPosition + Vector3.back * (-(transform.parent.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 1);
 					
+					nextRoom = roomApi.GetBottom();
+				
 					break;
 				
 				case "EASTDOOR":
@@ -42,6 +47,8 @@ public class DoorTrigger : MonoBehaviour
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
 					nextPlayerPosition = nextRoomPosition + Vector3.right * (-(transform.parent.localScale.x/2) + (transform.localScale.x/2) + (other.transform.localScale.x/2) + 2);
 					
+					nextRoom = roomApi.GetRight();
+				
 					break;
 				
 				case "WESTDOOR":
@@ -52,8 +59,13 @@ public class DoorTrigger : MonoBehaviour
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
 					nextPlayerPosition = nextRoomPosition + Vector3.left * (-(transform.parent.localScale.x/2) + (transform.localScale.x/2) + (other.transform.localScale.x/2) + 2);
 					
+					nextRoom = roomApi.GetLeft();
+				
 					break;
 			}
+			
+			roomApi.setActiveTrap(false);
+			nextRoom.setActiveTrap(true);
 			
 			Camera.main.GetComponent<CameraBehaviour>().snapToPosition(nextRoomPosition);
 			other.GetComponent<PlayerMovement>().snapToPosition(nextPlayerPosition);

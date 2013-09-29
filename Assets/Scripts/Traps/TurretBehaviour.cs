@@ -53,12 +53,13 @@ public class TurretBehaviour : MonoBehaviour
 			Debug.LogError("Please set a shot speed!");
 		}
 		
-		can_shoot = true;
+		StartCoroutine(doCooldown(reload_cooldown));
 	}
 	
 
 	void Update()
 	{	
+		
 		if(marty != null)
 		{
 			if(is_static)
@@ -84,11 +85,11 @@ public class TurretBehaviour : MonoBehaviour
 
 	void doLockOn()
 	{
-		if( marty != null && Vector3.Distance(marty.transform.position, turret_muzzle.transform.position) <= sight_radius)
+		if(Vector3.Distance(marty.transform.position, turret_muzzle.transform.position) <= sight_radius)
 		{
 			RaycastHit hit;
 			
-			Debug.DrawRay(turret_muzzle.transform.position, transform.forward * sight_radius, Color.yellow, 4);
+			//Debug.DrawRay(turret_muzzle.transform.position, transform.forward * sight_radius, Color.yellow, 4);
 			if(Physics.Raycast(turret_muzzle.transform.position, transform.forward, out hit, sight_radius))
 			{
 				doShoot();
@@ -116,7 +117,8 @@ public class TurretBehaviour : MonoBehaviour
 			blast.gameObject.rigidbody.velocity = turret_muzzle.transform.forward * shot_speed;
 			blast.GetComponent<TurretLaserBehaviour>().setOrigin(turret_muzzle.transform.position);
 			can_shoot = false;
-			StartCoroutine(doCooldown(reload_cooldown));
+			
+			StartCoroutine(doCooldown(reload_cooldown));		
 		}
 	}
 }

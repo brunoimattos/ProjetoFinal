@@ -6,36 +6,44 @@ public class ResourceManager : MonoBehaviour {
 	
 	public List<Texture2D> Textures;
 	public List<AudioClip> Sounds;
+	public List<Transform> Traps;
 	
-	public List<Transform> regularRooms;
-	public List<Transform> initialRooms;
-	public List<Transform> finalRooms;
+	public List<Transform> TrapRooms;
+	public List<Transform> InitialRooms;
+	public List<Transform> FinalRooms;
 
 		
 	void Awake()
 	{
-		if(regularRooms == null) Debug.LogError("There are no regularRoom Prefabs assigned to the Room Manager!");
-		if(initialRooms == null) Debug.LogError("There are no initialRoom Prefabs assigned to the Room Manager!");
-		if(finalRooms == null) Debug.LogError("There are no finalRoom Prefabs assigned to the Room Manager!");
+		if(TrapRooms == null) Debug.LogError("There are no TrapRoom Prefabs assigned to the Room Manager!");
+		if(InitialRooms == null) Debug.LogError("There are no InitialRoom Prefabs assigned to the Room Manager!");
+		if(FinalRooms == null) Debug.LogError("There are no FinalRoom Prefabs assigned to the Room Manager!");
+		if(Traps == null) Debug.LogError("There are no Trap Prefabs assigned to the Room Manager!");
 		
 	}
 	
 	public Transform getRandomInitialRoom()
 	{
-		int i = Random.Range(0, initialRooms.Count);
-		return initialRooms[i];
+		int i = Random.Range(0, InitialRooms.Count);
+		return InitialRooms[i];
 	}
 	
 	public Transform getRandomFinalRoom()
 	{
-		int i = Random.Range(0, finalRooms.Count);
-		return finalRooms[i];
+		int i = Random.Range(0, FinalRooms.Count);
+		return FinalRooms[i];
 	}
 				
-	public Transform getRandomRegularRoom()
+	public Transform getRandomTrapRoom()
 	{
-		int i = Random.Range(0, regularRooms.Count);
-		return regularRooms[i];
+		int i = Random.Range(0, TrapRooms.Count);
+		return TrapRooms[i];
+	}
+	
+	public Transform getRandomTrap()
+	{
+		int i = Random.Range(0, Traps.Count);
+		return Traps[i];
 	}
 
 	public Texture2D getTextureByName(string textureName)
