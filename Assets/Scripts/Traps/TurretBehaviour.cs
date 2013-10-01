@@ -52,8 +52,6 @@ public class TurretBehaviour : MonoBehaviour
 		{
 			Debug.LogError("Please set a shot speed!");
 		}
-		
-		StartCoroutine(doCooldown(reload_cooldown));
 	}
 	
 
@@ -73,6 +71,10 @@ public class TurretBehaviour : MonoBehaviour
 		}
 		
 		
+	}
+	
+	void OnEnable () {
+		StartCoroutine(doCooldown(reload_cooldown));
 	}
 	
 	IEnumerator doCooldown(float cooldownTime)

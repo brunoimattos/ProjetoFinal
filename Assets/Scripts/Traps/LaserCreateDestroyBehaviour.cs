@@ -12,8 +12,8 @@ public class LaserCreateDestroyBehaviour : MonoBehaviour
 	public float laserOnTime;
 	public float laserOffTime;
 	
-	private Transform createdLaser;
 	private bool laserOn;
+	private Transform createdLaser;
 	
 	void Awake()
 	{
@@ -23,13 +23,24 @@ public class LaserCreateDestroyBehaviour : MonoBehaviour
 		if(emmiterA == null || emmiterB == null)
 			Debug.LogError("Please assign the points of reference for creation!");
 		
-		this.laserOn = false;
+		laserOn = false;
 	}
 	
 	void Start()
 	{
 		StartCoroutine(turnLaserOn(laserOnTime));
 	}
+	
+	void OnEnable () {
+		if (laserOn)
+		{
+			StartCoroutine(turnLaserOff(laserOnTime));
+		} else
+		{
+			StartCoroutine(turnLaserOn(laserOnTime));
+		}
+	}
+	
 	
 	IEnumerator turnLaserOn(float laserOnTime)
 	{
@@ -39,6 +50,16 @@ public class LaserCreateDestroyBehaviour : MonoBehaviour
 		
 		StartCoroutine(turnLaserOff(laserOffTime));
 	}
+	
+	IEnumerator turnLaserOff(float laserOffTime)
+	{
+		LaserOff();
+		
+		yield return new WaitForSeconds(laserOffTime);
+		
+		StartCoroutine(turnLaserOn(laserOnTime));
+	}
+	
 	
 	private void LaserOn()
 	{
@@ -70,22 +91,12 @@ public class LaserCreateDestroyBehaviour : MonoBehaviour
 		createdLaser.gameObject.transform.localScale = scale;
 		createdLaser.parent = this.gameObject.transform;
 		
-		this.laserOn = true;
-	}
-	
-	IEnumerator turnLaserOff(float laserOffTime)
-	{
-		LaserOff();
-		
-		yield return new WaitForSeconds(laserOffTime);
-		
-		StartCoroutine(turnLaserOn(laserOnTime));
+		laserOn = true;
 	}
 	
 	private void LaserOff()
 	{
 		Destroy(createdLaser.gameObject);
-		
-		this.laserOn = false;
+		laserOn = false;
 	}
 }
