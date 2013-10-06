@@ -28,8 +28,10 @@ public class DoorTrigger : MonoBehaviour
 					worldZ = roomApi.GetTop().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
+
 					nextPlayerPosition = nextRoomPosition + Vector3.forward * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.5f);
 					nextPlayerPosition = new Vector3(other.transform.position.x, nextPlayerPosition.y, nextPlayerPosition.z);
+
 					nextRoom = roomApi.GetTop();
 					
 					break;
