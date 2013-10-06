@@ -91,10 +91,11 @@ public class Room
 	
 	public Room AddChild(int direction)
 	{
-		if (direction == 0) return dungeon.AddRoom(this,x-1,y, width, height); // Left
+		if (direction == 0) return dungeon.AddRoom(this,x,y+1, width, height); // Top
 		if (direction == 1) return dungeon.AddRoom(this,x+1,y, width, height); // Right
-		if (direction == 2) return dungeon.AddRoom(this,x,y+1, width, height); // Top
-		if (direction == 3) return dungeon.AddRoom(this,x,y-1, width, height); // Bottom
+		if (direction == 2) return dungeon.AddRoom(this,x,y-1, width, height); // Bottom
+		if (direction == 3) return dungeon.AddRoom(this,x-1,y, width, height); // Left
+		
 		return null;
 	}
 	
@@ -106,21 +107,21 @@ public class Room
 		
 		switch (direction)
 		{
-			case 0: // Left
-				if (x == 0) return GetValidDirection(num_tries+1);
-				if (GetLeft() != null) return GetValidDirection(num_tries+1);
-				break;
+			case 0: // Top
+				if (y >= dungeon.DUNGEON_SIZE_Y - 1) return GetValidDirection(num_tries+1);
+				if (GetTop() != null) return GetValidDirection(num_tries+1);	
+				break;	
 			case 1: // Right
 				if (x >= dungeon.DUNGEON_SIZE_X - 1) return GetValidDirection(num_tries+1);
 				if (GetRight() != null) return GetValidDirection(num_tries+1);
 				break;
-			case 2: // Top
-				if (y >= dungeon.DUNGEON_SIZE_Y - 1) return GetValidDirection(num_tries+1);
-				if (GetTop() != null) return GetValidDirection(num_tries+1);	
-				break;
-			case 3: // Bottom
+			case 2: // Bottom
 				if (y == 0) return GetValidDirection(num_tries++);
 				if (GetBottom() != null) return GetValidDirection(num_tries+1);
+				break;
+			case 3: // Left
+				if (x == 0) return GetValidDirection(num_tries+1);
+				if (GetLeft() != null) return GetValidDirection(num_tries+1);
 				break;
 		}
 		

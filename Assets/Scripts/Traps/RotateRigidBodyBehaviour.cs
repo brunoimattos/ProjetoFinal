@@ -13,11 +13,13 @@ public class RotateRigidBodyBehaviour : MonoBehaviour
 		{
 			Debug.LogError("Please set rotationSpeed!");
 		}
+	
+		this.rigidbody.AddTorque(rotationAxis*rotationSpeed);
 	}
 	
 	
 	void FixedUpdate()
 	{
-		this.rigidbody.AddTorque(rotationAxis*rotationSpeed);
+		
 	}
 }
