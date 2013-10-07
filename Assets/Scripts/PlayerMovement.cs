@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 	{	
 		if(col.gameObject.CompareTag("Trap"))
 		{
-			Application.LoadLevel("geracao_arvore");
+			Application.LoadLevel("LevelGeneration");
 			Debug.Log("LOL, I'm dead!");	
 		}
 		
