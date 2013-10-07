@@ -48,9 +48,13 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	{
 		particles = new List<Transform>();
 		//my_particle = create_particle(particle_material);
-		StartCoroutine(timed_bursts(burst_mode, burst_cooldown));	
 	}
-
+	
+	void OnEnable()
+	{
+		StartCoroutine(timed_bursts(burst_mode, burst_cooldown));
+	}
+	
 	public IEnumerator timed_bursts(bool is_burst, float cooldown)
 	{
 		while(is_burst)

@@ -16,10 +16,4 @@ public class RotateRigidBodyBehaviour : MonoBehaviour
 	
 		this.rigidbody.AddTorque(rotationAxis*rotationSpeed);
 	}
-	
-	
-	void FixedUpdate()
-	{
-		
-	}
 }

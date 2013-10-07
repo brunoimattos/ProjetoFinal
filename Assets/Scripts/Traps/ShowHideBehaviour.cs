@@ -32,4 +32,8 @@ public class ShowHideBehaviour : MonoBehaviour
 		
 		StartCoroutine(showObject(showTime));
 	}
+	
+	void OnEnable () {
+		StartCoroutine(showObject(showTime));
+	}
 }
