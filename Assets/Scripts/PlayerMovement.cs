@@ -34,7 +34,11 @@ public class PlayerMovement : MonoBehaviour
 	
 	void doPCMovement()
 	{
-		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); 
+		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+		
+		if(movement.magnitude > 1.0f){
+			movement.Normalize();
+		}
 		
 		this.transform.Translate(movement * confusion * playerSpeed * Time.deltaTime);
 		
