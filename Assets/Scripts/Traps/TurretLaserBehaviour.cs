@@ -33,4 +33,9 @@ public class TurretLaserBehaviour : MonoBehaviour {
 	{
 		this.origin = origin;
 	}
+
+	void OnCollisionEnter(Collision col)
+	{
+		Destroy(this.gameObject);
+	}
 }
