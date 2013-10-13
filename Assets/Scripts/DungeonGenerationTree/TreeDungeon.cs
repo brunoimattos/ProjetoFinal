@@ -127,6 +127,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			// Add the room info to the GameObject main script
 			GameRoom gameRoom = g.gameObject.GetComponent<GameRoom>();
 			gameRoom.room = room;
+			gameRoom.createDoorConfig();
 			g.tag = roomTag;
 			
 			if (room.IsFirstNode()) 
@@ -143,11 +144,13 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		Transform t;
 		Room room;
 		GameObject traps;
+		GameRoom gameRoomApi;
 		
 		foreach(GameObject gameRoom in GameObject.FindGameObjectsWithTag("TrapRoom"))
 		{
-			room = gameRoom.gameObject.GetComponent<GameRoom>().room;
-			instTrap = resourceApi.getRandomTrap();
+			gameRoomApi = gameRoom.gameObject.GetComponent<GameRoom>();
+			room = gameRoomApi.room;
+			instTrap = resourceApi.getRandomTrap(gameRoomApi.getDoorConfig());
 			
 			traps = new GameObject("Traps");
 			traps.transform.parent = gameRoom.transform;
