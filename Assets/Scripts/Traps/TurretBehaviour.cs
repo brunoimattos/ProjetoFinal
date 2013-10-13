@@ -79,9 +79,7 @@ public class TurretBehaviour : MonoBehaviour
 	
 	IEnumerator doCooldown(float cooldownTime)
 	{
-		Debug.Log("Waiting..." + cooldownTime);
 		yield return new WaitForSeconds(cooldownTime);
-		Debug.Log("Done Waiting...");
 		can_shoot = true;
 	}
 
