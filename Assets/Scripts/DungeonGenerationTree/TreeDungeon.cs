@@ -126,6 +126,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			
 			// Add the room info to the GameObject main script
 			GameRoom gameRoom = g.gameObject.GetComponent<GameRoom>();
+
 			gameRoom.room = room;
 			gameRoom.createDoorConfig();
 			g.tag = roomTag;
@@ -141,24 +142,34 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	public void GenerateGameTraps()
 	{
 		Transform instTrap;
-		Transform t;
+		Transform trap;
 		Room room;
 		GameObject traps;
 		GameRoom gameRoomApi;
+		Vector3 trapFlipping = Vector3.zero;
 		
 		foreach(GameObject gameRoom in GameObject.FindGameObjectsWithTag("TrapRoom"))
 		{
 			gameRoomApi = gameRoom.gameObject.GetComponent<GameRoom>();
 			room = gameRoomApi.room;
-			instTrap = resourceApi.getRandomTrap(gameRoomApi.getDoorConfig());
+			instTrap = resourceApi.getRandomTrap(gameRoomApi.getDoorConfig(), ref trapFlipping);
 			
 			traps = new GameObject("Traps");
 			traps.transform.parent = gameRoom.transform;
 			
-			t = GameObject.Instantiate(instTrap, new Vector3(room.worldX,1.1f,room.worldZ),Quaternion.identity) as Transform;
-			t.transform.parent = traps.transform;
+			trap = GameObject.Instantiate(instTrap, new Vector3(room.worldX,1.1f,room.worldZ),Quaternion.identity) as Transform;
 			
-			t.gameObject.SetActive(false);
+			foreach(Transform t in trap)
+			{
+				
+				t.localPosition = Vector3.Scale(t.localPosition, trapFlipping);
+				
+			}
+			
+			trap.transform.parent = traps.transform;
+			
+			
+			trap.gameObject.SetActive(false);
 		}
 	}
 		
