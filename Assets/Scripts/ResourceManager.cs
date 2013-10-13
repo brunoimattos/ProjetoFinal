@@ -73,37 +73,37 @@ public class ResourceManager : MonoBehaviour {
 		return TrapRooms[i];
 	}
 	
-	public Transform getRandomTrap(string doorConfig)
+	public Transform getRandomTrap(string doorConfig, ref Vector3 flipping)
 	{
+
 		if(FlipMapping.ContainsKey(doorConfig))
-		{
+		{			
 			string instructions = FlipMapping[doorConfig];
 			
 			string[] parts = instructions.Split('.');
 			
 			// parts[0] contem uma configuraçao "primordial" de portas.
-			Transform trap = getRandomTrap(parts[0]);
+			//Transform trap = getRandomTrap(parts[0]);
+			Transform trap = GetRandomItemInList(TrapSet[parts[0]]);
 			
-			Vector3 flipping = new Vector3(1,1,1);
+			flipping = new Vector3(1, 1, 1);
+
 			// parts[1] contem instrucoes sobre inverter os sinais das posiçoes X e Z de um transform.
 			if(parts[1][0] == '1')
 			{
-				flipping = new Vector3(-1, flipping.y, flipping.z);
+				flipping = new Vector3(1, 1, -1);
 			}
 			
 			if(parts[1][1] == '1')
 			{
-				flipping = new Vector3(flipping.x, flipping.y, -1);
-			}
-			
-			foreach(Transform t in trap)
-			{
-				t.position.Scale(flipping);
+				flipping = new Vector3(-1, 1, 1);
 			}
 			
 			return trap;
 			
 		}
+		flipping = new Vector3(1, 1, 1);
+		
 		return GetRandomItemInList(TrapSet[doorConfig]);
 	}
 	
