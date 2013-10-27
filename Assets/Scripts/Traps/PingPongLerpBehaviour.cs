@@ -3,11 +3,12 @@ using System.Collections;
 
 public class PingPongLerpBehaviour : MonoBehaviour {
 	
-	private Vector3 _fromPosition;
-	private Vector3 _toPosition;
+	public Vector3 _fromPosition;
+	public Vector3 _toPosition;
  	
     IEnumerator Start()
     {
+
 		_fromPosition = transform.position;
 		_toPosition = _fromPosition + Vector3.forward * 0.5f;
 		
