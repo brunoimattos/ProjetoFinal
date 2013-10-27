@@ -45,7 +45,7 @@ public class DoorTrigger : MonoBehaviour
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
 
-					nextPlayerPosition = nextRoomPosition + Vector3.forward * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.5f);
+					nextPlayerPosition = nextRoomPosition + Vector3.forward * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.1f);
 					nextPlayerPosition = new Vector3(other.transform.position.x, nextPlayerPosition.y, nextPlayerPosition.z);
 
 					nextRoom = currentRoom.GetTop();
@@ -58,7 +58,7 @@ public class DoorTrigger : MonoBehaviour
 					worldZ = currentRoom.GetBottom().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
-					nextPlayerPosition = nextRoomPosition + Vector3.back * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.5f);
+					nextPlayerPosition = nextRoomPosition + Vector3.back * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.1f);
 					nextPlayerPosition = new Vector3(other.transform.position.x, nextPlayerPosition.y, nextPlayerPosition.z);
 					nextRoom = currentRoom.GetBottom();
 				
@@ -70,7 +70,7 @@ public class DoorTrigger : MonoBehaviour
 					worldZ = currentRoom.GetRight().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
-					nextPlayerPosition = nextRoomPosition + Vector3.right * (-(roomFloor.localScale.x/2) + (transform.localScale.x/2) - (other.transform.localScale.x/2));
+					nextPlayerPosition = nextRoomPosition + Vector3.right * (-(roomFloor.localScale.x/2) + (transform.localScale.z/2) + (other.transform.localScale.x/2) + 0.1f);
 					nextPlayerPosition = new Vector3(nextPlayerPosition.x, nextPlayerPosition.y, other.transform.position.z);
 					nextRoom = currentRoom.GetRight();
 				
@@ -82,7 +82,7 @@ public class DoorTrigger : MonoBehaviour
 					worldZ = currentRoom.GetLeft().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
-					nextPlayerPosition = nextRoomPosition + Vector3.left * (-(roomFloor.localScale.x/2) + (transform.localScale.x/2) - (other.transform.localScale.x/2));
+					nextPlayerPosition = nextRoomPosition + Vector3.left * (-(roomFloor.localScale.x/2) + (transform.localScale.z/2) + (other.transform.localScale.x/2) + 0.1f);
 					nextPlayerPosition = new Vector3(nextPlayerPosition.x, nextPlayerPosition.y, other.transform.position.z);
 				
 					nextRoom = currentRoom.GetLeft();

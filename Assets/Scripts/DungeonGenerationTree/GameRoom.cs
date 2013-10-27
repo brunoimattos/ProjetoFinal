@@ -14,10 +14,9 @@ public class GameRoom : MonoBehaviour {
 		// Remove walls if connected
 		if (room.IsConnectedTo(room.GetLeft()))
 		{
-			//doorWest.SetActive(false);
 			doorWest.collider.isTrigger = true;
 			doorWest.renderer.enabled = false;
-			
+			scaleCollider(doorWest, false);			
 		}
 		else
 		{
@@ -26,9 +25,9 @@ public class GameRoom : MonoBehaviour {
 		
 		if (room.IsConnectedTo(room.GetRight()))
 		{
-			//doorEast.SetActive(false);
 			doorEast.collider.isTrigger = true;
 			doorEast.renderer.enabled = false;
+			scaleCollider(doorEast, true);
 		}
 		else
 		{
@@ -37,9 +36,9 @@ public class GameRoom : MonoBehaviour {
 		
 		if (room.IsConnectedTo(room.GetTop()))
 		{
-			//doorNorth.SetActive(false);
 			doorNorth.collider.isTrigger = true;
 			doorNorth.renderer.enabled = false;
+			scaleCollider(doorNorth, false);
 		}
 		else
 		{
@@ -48,9 +47,9 @@ public class GameRoom : MonoBehaviour {
 		
 		if (room.IsConnectedTo(room.GetBottom()))
 		{
-			//doorSouth.SetActive(false);
 			doorSouth.collider.isTrigger = true;
 			doorSouth.renderer.enabled = false;
+			scaleCollider(doorSouth, true);
 		}
 		else
 		{
@@ -61,6 +60,16 @@ public class GameRoom : MonoBehaviour {
 	void Update () 
 	{
 		
+	}
+	
+	private void scaleCollider(GameObject roomDoor, bool flipCenter)
+	{
+		BoxCollider boxCollider = (BoxCollider)roomDoor.GetComponent(typeof(BoxCollider));
+		boxCollider.size = new Vector3(0.8f, 1f, 0.5f);
+		if (!flipCenter)
+			boxCollider.center = new Vector3(0.0f, 0.0f, 0.2f);
+		else
+			boxCollider.center = new Vector3(0.0f, 0.0f, -0.2f);
 	}
 	
 	public void createDoorConfig()
