@@ -65,25 +65,6 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 	
-	void OnCollisionEnter(Collision col)
-	{	
-		if(col.gameObject.CompareTag("Trap"))
-		{
-			Application.LoadLevel("LevelGeneration");
-			Debug.Log("LOL, I'm dead!");	
-		}
-		
-		if(col.gameObject.CompareTag("ConfuseGas"))
-		{
-			Destroy(col.gameObject);
-
-			if (GetComponent<ConfusionGasEffect>() == null)
-			{
-				gameObject.AddComponent("ConfusionGasEffect");
-			}
-		}
-	}
-	
 	public void setConfusion(bool confused)
 	{
 		if(confused)
@@ -98,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 	
 	public void snapToPosition(Vector3 toPosition)
 	{
-		Debug.Log("FromPosition: " + transform.position + " ToPosition: " + toPosition);
+		/* This function sets this transforms position. It is used when the player changes rooms. */
 		this.transform.position = new Vector3(toPosition.x, this.transform.position.y, toPosition.z);
 	}
 }
