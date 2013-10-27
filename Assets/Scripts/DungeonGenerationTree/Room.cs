@@ -9,6 +9,7 @@ public class Room
 	private Transform roomTransform;
 	private float width, height;
 	private TreeDungeon dungeon;
+	private string name;
 	
 	private static int MAX_TRIES = 2;
 	
@@ -19,6 +20,7 @@ public class Room
 		y = _y;
 		width = _width;
 		height = _height;
+		name = "R_" + x + "_" + y;
 		dungeon = TreeDungeon.instance;
 	}
 	
@@ -201,6 +203,11 @@ public class Room
 		if (GetLeft() == null && x > 0) n++;
 		if (GetRight() == null && x < dungeon.DUNGEON_SIZE_X - 1) n++;
 		return n;
+	}
+	
+	public string getName()
+	{
+		return this.name;
 	}
 	
 	public string ToString()

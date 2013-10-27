@@ -16,6 +16,8 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	
 	private GameObject initialRoom;
 	
+	private GameObject finalRoom;
+	
 	private int nRooms = 0;
 	
 	private ResourceManager resourceApi;
@@ -28,12 +30,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		
 		marty = GameObject.FindGameObjectWithTag("Player");
 		
-		
-		GenerateDungeon();
-		GenerateGameRooms();
-		GenerateGameTraps();
-		
-		setPlayerAndCamera();
+		GenerateLevel();
 	}
 	
 	void setPlayerAndCamera()
@@ -54,18 +51,54 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	
 	public void RegenerateDungeon()
 	{
-		foreach(GameObject room in GameObject.FindGameObjectsWithTag("InitialRoom"))
-			Destroy(room);
 		foreach(GameObject room in GameObject.FindGameObjectsWithTag("TrapRoom"))
-			Destroy(room);
-		foreach(GameObject room in GameObject.FindGameObjectsWithTag("FinalRoom"))
 			Destroy(room);
 		
 		Destroy(initialRoom);
+		Destroy(finalRoom);
 		nRooms = 0;
 		
+		GenerateLevel();
+	}
+	
+	public void GenerateLevel()
+	{		
 		GenerateDungeon();
 		GenerateGameRooms();
+		
+		GameRoom finalGameRoom = finalRoom.GetComponent<GameRoom>();
+		Transform finalRoomDoor = resourceApi.GetFinalRoomDoor();
+		Vector3 finalRoomDoorPosition = Vector3.zero;
+		Vector3 finalRoomDoorRotation = Vector3.zero;
+		
+		
+		
+		if (finalGameRoom.room.IsConnectedTo(finalGameRoom.room.GetTop()))
+		{
+			finalRoomDoorPosition = finalGameRoom.doorNorth.transform.position;
+			finalRoomDoorPosition += new Vector3(0, 0, finalGameRoom.doorNorth.transform.localScale.z);
+		}
+		else if (finalGameRoom.room.IsConnectedTo(finalGameRoom.room.GetRight()))
+		{
+			finalRoomDoorRotation = new Vector3(0, -90, 0);
+			finalRoomDoorPosition = finalGameRoom.doorEast.transform.position;
+			finalRoomDoorPosition += new Vector3(finalGameRoom.doorEast.transform.localScale.z, 0, 0);
+		}
+		else if (finalGameRoom.room.IsConnectedTo(finalGameRoom.room.GetBottom()))
+		{
+			finalRoomDoorPosition = finalGameRoom.doorSouth.transform.position;
+			finalRoomDoorPosition -= new Vector3(0, 0, finalGameRoom.doorSouth.transform.localScale.z);
+		}
+		else if (finalGameRoom.room.IsConnectedTo(finalGameRoom.room.GetLeft()))
+		{
+			finalRoomDoorRotation = new Vector3(0, 90, 0);
+			finalRoomDoorPosition = finalGameRoom.doorWest.transform.position;
+			finalRoomDoorPosition -= new Vector3(finalGameRoom.doorWest.transform.localScale.z, 0, 0);
+		}
+		
+		Transform g = GameObject.Instantiate(finalRoomDoor, finalRoomDoorPosition, Quaternion.Euler(finalRoomDoorRotation)) as Transform;
+		g.parent = finalRoom.transform;
+		
 		GenerateGameTraps();
 		
 		setPlayerAndCamera();
@@ -131,11 +164,16 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			gameRoom.createDoorConfig();
 			g.tag = roomTag;
 			
-			if (room.IsFirstNode()) 
+			if (g.CompareTag("InitialRoom")) 
 			{
 				initialRoom = g.gameObject;
 			}
-			g.name = "Room: " + room.x + " " + room.y;
+			if (g.CompareTag("FinalRoom"))
+			{
+				finalRoom = g.gameObject;
+			}
+			
+			g.name = room.getName();
 		}
 	}
 	

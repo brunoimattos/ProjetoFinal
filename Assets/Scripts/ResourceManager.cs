@@ -13,6 +13,8 @@ public class ResourceManager : MonoBehaviour {
 	public List<Transform> TrapRooms;
 	public List<Transform> FinalRooms;
 	
+	public Transform FinalRoomDoor;
+	
 	public List<Transform> traps_0100;
 	public List<Transform> traps_1000;
 	public List<Transform> traps_1100;
@@ -29,6 +31,7 @@ public class ResourceManager : MonoBehaviour {
 		if(TrapRooms == null) Debug.LogError("There are no TrapRoom Prefabs assigned to the Room Manager!");
 		if(InitialRooms == null) Debug.LogError("There are no InitialRoom Prefabs assigned to the Room Manager!");
 		if(FinalRooms == null) Debug.LogError("There are no FinalRoom Prefabs assigned to the Room Manager!");
+		if(FinalRoomDoor == null) Debug.LogError("There is no FinalRoomDoor Prefab assigned to the Room Manager!");
 
 		/* Dicionario que relaciona uma configuraçao de porta com as traps criadas para aquela configuraçao. */
 		TrapSet = new Dictionary<string, List<Transform>>();
@@ -112,7 +115,12 @@ public class ResourceManager : MonoBehaviour {
 		int i = UnityEngine.Random.Range(0, list.Count);
 		return list[i];
 	}
-
+	
+	public Transform GetFinalRoomDoor()
+	{
+		return FinalRoomDoor;
+	}
+	
 	public Texture2D getTextureByName(string textureName)
 	{
 		foreach(Texture2D texture in Textures)
