@@ -38,6 +38,11 @@ public class CameraBehaviour : MonoBehaviour {
 		this.transform.position = new Vector3(toPosition.x, cameraHeight, toPosition.z );
 	}
 	
+	public bool isLerping()
+	{
+		return _lerping;
+	}
+	
 	public void snapToPosition(Vector3 toPosition)
 	{
 		_fromPosition = transform.position;

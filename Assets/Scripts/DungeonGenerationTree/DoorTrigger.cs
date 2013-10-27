@@ -4,10 +4,25 @@ using System.Collections;
 public class DoorTrigger : MonoBehaviour
 {
 	private Transform roomFloor;
+	private bool roomHasChanged;
+	private Room currentRoom;
+	private CameraBehaviour cameraBehaviour;
 	
 	void Start()
 	{
 		roomFloor =  transform.parent.FindChild("RoomFloor");
+		cameraBehaviour = Camera.main.GetComponent<CameraBehaviour>();
+		currentRoom = null;
+		roomHasChanged = false;
+	}
+	
+	void Update()
+	{
+		if (roomHasChanged && !cameraBehaviour.isLerping())
+		{
+			currentRoom.setActiveTrap(false);
+			roomHasChanged = false;
+		}
 	}
 	
 	void OnTriggerEnter (Collider other)
@@ -15,69 +30,68 @@ public class DoorTrigger : MonoBehaviour
 		if (other.CompareTag("Player"))
 		{
 			Debug.Log("Door has been hit.");
+			roomHasChanged = true;
 			Vector3 nextRoomPosition = Vector3.zero;
 			Vector3 nextPlayerPosition = Vector3.zero;
-			Room roomApi = transform.parent.GetComponent<GameRoom>().room;
+			currentRoom = transform.parent.GetComponent<GameRoom>().room;
 			Room nextRoom = null;
 			float worldX;
 			float worldZ;
 			switch (this.gameObject.transform.name.ToUpper()) {
 				case "NORTHDOOR":
 
-					worldX = roomApi.GetTop().worldX;
-					worldZ = roomApi.GetTop().worldZ;
+					worldX = currentRoom.GetTop().worldX;
+					worldZ = currentRoom.GetTop().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
 
-					nextPlayerPosition = nextRoomPosition + Vector3.forward * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.5f);
+					nextPlayerPosition = nextRoomPosition + Vector3.forward * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.1f);
 					nextPlayerPosition = new Vector3(other.transform.position.x, nextPlayerPosition.y, nextPlayerPosition.z);
 
-					nextRoom = roomApi.GetTop();
+					nextRoom = currentRoom.GetTop();
 					
 					break;
 				
 				case "SOUTHDOOR":	
 				
-					worldX = roomApi.GetBottom().worldX;
-					worldZ = roomApi.GetBottom().worldZ;
+					worldX = currentRoom.GetBottom().worldX;
+					worldZ = currentRoom.GetBottom().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
-					nextPlayerPosition = nextRoomPosition + Vector3.back * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.5f);
+					nextPlayerPosition = nextRoomPosition + Vector3.back * (-(roomFloor.localScale.z/2) + (transform.localScale.z/2) + (other.transform.localScale.z/2) + 0.1f);
 					nextPlayerPosition = new Vector3(other.transform.position.x, nextPlayerPosition.y, nextPlayerPosition.z);
-					nextRoom = roomApi.GetBottom();
+					nextRoom = currentRoom.GetBottom();
 				
 					break;
 				
 				case "EASTDOOR":
 				
-					worldX = roomApi.GetRight().worldX;
-					worldZ = roomApi.GetRight().worldZ;
+					worldX = currentRoom.GetRight().worldX;
+					worldZ = currentRoom.GetRight().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
-					nextPlayerPosition = nextRoomPosition + Vector3.right * (-(roomFloor.localScale.x/2) + (transform.localScale.x/2) - (other.transform.localScale.x/2));
+					nextPlayerPosition = nextRoomPosition + Vector3.right * (-(roomFloor.localScale.x/2) + (transform.localScale.z/2) + (other.transform.localScale.x/2) + 0.1f);
 					nextPlayerPosition = new Vector3(nextPlayerPosition.x, nextPlayerPosition.y, other.transform.position.z);
-					nextRoom = roomApi.GetRight();
+					nextRoom = currentRoom.GetRight();
 				
 					break;
 				
 				case "WESTDOOR":
 				
-					worldX = roomApi.GetLeft().worldX;
-					worldZ = roomApi.GetLeft().worldZ;
+					worldX = currentRoom.GetLeft().worldX;
+					worldZ = currentRoom.GetLeft().worldZ;
 					
 					nextRoomPosition = new Vector3(worldX, 0, worldZ);
-					nextPlayerPosition = nextRoomPosition + Vector3.left * (-(roomFloor.localScale.x/2) + (transform.localScale.x/2) - (other.transform.localScale.x/2));
+					nextPlayerPosition = nextRoomPosition + Vector3.left * (-(roomFloor.localScale.x/2) + (transform.localScale.z/2) + (other.transform.localScale.x/2) + 0.1f);
 					nextPlayerPosition = new Vector3(nextPlayerPosition.x, nextPlayerPosition.y, other.transform.position.z);
 				
-					nextRoom = roomApi.GetLeft();
+					nextRoom = currentRoom.GetLeft();
 				
 					break;
 			}
-			
-			roomApi.setActiveTrap(false);
 			nextRoom.setActiveTrap(true);
 			
-			Camera.main.GetComponent<CameraBehaviour>().snapToPosition(nextRoomPosition);
+			cameraBehaviour.snapToPosition(nextRoomPosition);
 			other.GetComponent<PlayerMovement>().snapToPosition(nextPlayerPosition);
 		}
 	}
