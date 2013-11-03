@@ -6,9 +6,13 @@ public class PingPongLerpBehaviour : MonoBehaviour {
 	public Vector3 _fromPosition;
 	public Vector3 _toPosition;
  	
-    IEnumerator Start()
+    void Start()
     {
-
+		StartCoroutine(StartMovement());
+    }
+	
+	IEnumerator StartMovement()
+	{
 		_fromPosition = transform.position;
 		_toPosition = _fromPosition + Vector3.forward * 0.5f;
 		
@@ -17,7 +21,7 @@ public class PingPongLerpBehaviour : MonoBehaviour {
 			yield return new WaitForSeconds(1.0f);
 		    yield return StartCoroutine(MoveObject(transform, _toPosition, _fromPosition, 2.0f));
 		}
-    }
+	}
  
     IEnumerator MoveObject(Transform thisTransform, Vector3 startPos, Vector3 endPos, float time)
     {
@@ -29,6 +33,11 @@ public class PingPongLerpBehaviour : MonoBehaviour {
 			yield return null; 
 		}
     }
+	
+	void OnEnable()
+	{
+		StartCoroutine(StartMovement());
+	}
 	
 }
 

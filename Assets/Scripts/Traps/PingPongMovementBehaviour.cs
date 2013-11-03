@@ -10,13 +10,18 @@ public class PingPongMovementBehaviour : MonoBehaviour{
 	public float movementTime;
 	
 	
-	IEnumerator Start(){	
+	void Start(){	
+		StartCoroutine(StartMovement());
+    }
+	
+	IEnumerator StartMovement()
+	{
 		while (true) {
 		    yield return StartCoroutine(MoveObject(transform, pointA.position, pointB.position, movementTime));
 			
 		    yield return StartCoroutine(MoveObject(transform, pointB.position, pointA.position, movementTime));
 		}
-    }
+	}
     
 	IEnumerator MoveObject(Transform thisTransform, Vector3 startPos, Vector3 endPos, float time){
 		var i= 0.0f;
@@ -27,4 +32,9 @@ public class PingPongMovementBehaviour : MonoBehaviour{
 			yield return null; 
 		}
     }
+	
+	void OnEnable()
+	{
+		StartCoroutine(StartMovement());
+	}
 }
