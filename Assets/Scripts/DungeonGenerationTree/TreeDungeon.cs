@@ -161,7 +161,6 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			{
 				if(!room.HasChildren())
 				{
-					Debug.Log("Room name: " + room.getName());
 					leafRooms.Add(room);
 				}
 				instRoom = resourceApi.getRandomTrapRoom();
@@ -231,8 +230,6 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		int idx = Random.Range(0, leafRooms.Count-1);
 		
 		Room currentRoom = leafRooms[idx];
-		
-		Debug.Log("xxx Room name: "+ currentRoom.getName());
 		
 		Transform finalRoomKey = resourceApi.GetKeyByName("FinalRoomKey");
 		
