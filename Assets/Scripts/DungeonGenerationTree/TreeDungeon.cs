@@ -159,16 +159,17 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 				roomTag = "FinalRoom";
 			} else // if Trap Room
 			{
-				if(!room.HasChildren())
-				{
-					leafRooms.Add(room);
-				}
 				instRoom = resourceApi.getRandomTrapRoom();
 				roomTag = "TrapRoom";
 			}
 			
 			Transform g = GameObject.Instantiate(instRoom, new Vector3(room.worldX,0,room.worldZ),Quaternion.identity) as Transform;
 			room.setRoomTransform(g);
+			
+			if(!room.HasChildren() && finalRoomCreated)
+			{
+				leafRooms.Add(room);
+			}
 			
 			// Add the room info to the GameObject main script
 			GameRoom gameRoom = g.gameObject.GetComponent<GameRoom>();
@@ -218,7 +219,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			}
 			
 			trap.transform.parent = traps.transform;
-			
+			trap.name = "TrapConfig";
 			
 			trap.gameObject.SetActive(false);
 		}
@@ -233,11 +234,13 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		
 		Transform finalRoomKey = resourceApi.GetKeyByName("FinalRoomKey");
 		
-		finalRoomKey = GameObject.Instantiate(finalRoomKey, new Vector3(currentRoom.worldX,1.1f,currentRoom.worldZ),Quaternion.identity) as Transform;
+		Transform keyPositionTransform = currentRoom.getRoomKeyTransform();
+		
+		finalRoomKey = GameObject.Instantiate(finalRoomKey, new Vector3(keyPositionTransform.position.x, 1.1f, keyPositionTransform.position.z),Quaternion.identity) as Transform;
 		
 		finalRoomKey.name = "FinalRoomKey";
 		/* Esta alocado aqui dentro por falta de lugar melhor. */
-		finalRoomKey.parent = finalRoom.transform;
+		finalRoomKey.parent = keyPositionTransform;
 	}
 		
 	public Room AddRoom(Room parent, int x, int y, float width, float height)
