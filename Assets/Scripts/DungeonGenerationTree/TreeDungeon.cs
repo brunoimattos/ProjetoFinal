@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TreeDungeon : MonoSingleton<TreeDungeon> 
 {
@@ -22,6 +23,8 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	
 	private ResourceManager resourceApi;
 	
+	private List<Room> leafRooms;
+
 	private GameObject marty;
 	
 	public override void Init () 
@@ -29,7 +32,9 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		resourceApi = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
 		
 		marty = GameObject.FindGameObjectWithTag("Player");
-		
+
+		leafRooms = new List<Room>();
+
 		GenerateLevel();
 	}
 	
@@ -57,6 +62,8 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		Destroy(initialRoom);
 		Destroy(finalRoom);
 		nRooms = 0;
+
+		leafRooms.Clear();
 		
 		GenerateLevel();
 	}
@@ -98,8 +105,10 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		
 		Transform g = GameObject.Instantiate(finalRoomDoor, finalRoomDoorPosition, Quaternion.Euler(finalRoomDoorRotation)) as Transform;
 		g.parent = finalRoom.transform;
+		g.name = "FinalRoomDoor";
 		
 		GenerateGameTraps();
+		PlaceKeys();
 		
 		setPlayerAndCamera();
 	}
@@ -150,6 +159,11 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 				roomTag = "FinalRoom";
 			} else // if Trap Room
 			{
+				if(!room.HasChildren())
+				{
+					Debug.Log("Room name: " + room.getName());
+					leafRooms.Add(room);
+				}
 				instRoom = resourceApi.getRandomTrapRoom();
 				roomTag = "TrapRoom";
 			}
@@ -210,6 +224,24 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			trap.gameObject.SetActive(false);
 		}
 	}
+	
+	public void PlaceKeys()
+	{
+		
+		int idx = Random.Range(0, leafRooms.Count-1);
+		
+		Room currentRoom = leafRooms[idx];
+		
+		Debug.Log("xxx Room name: "+ currentRoom.getName());
+		
+		Transform finalRoomKey = resourceApi.GetKeyByName("FinalRoomKey");
+		
+		finalRoomKey = GameObject.Instantiate(finalRoomKey, new Vector3(currentRoom.worldX,1.1f,currentRoom.worldZ),Quaternion.identity) as Transform;
+		
+		finalRoomKey.name = "FinalRoomKey";
+		/* Esta alocado aqui dentro por falta de lugar melhor. */
+		finalRoomKey.parent = finalRoom.transform;
+	}
 		
 	public Room AddRoom(Room parent, int x, int y, float width, float height)
 	{
@@ -218,4 +250,5 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		nRooms++;
 		return room;
 	}	
+
 }
