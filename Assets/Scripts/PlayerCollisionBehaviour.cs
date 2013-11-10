@@ -16,6 +16,8 @@ public class PlayerCollisionBehaviour : MonoBehaviour
 	
 	void OnCollisionEnter(Collision col)
 	{	
+		Debug.Log("Col tag: " + col.gameObject.tag);
+		
 		/* The logic behind the player's collision. */
 		if(col.gameObject.CompareTag("Trap"))
 		{
@@ -43,6 +45,14 @@ public class PlayerCollisionBehaviour : MonoBehaviour
 		{
 			inventarioApi.AddItem(col.gameObject.name);
 			Destroy(col.gameObject);
+		}
+		
+		if(col.gameObject.CompareTag("FinalDoor"))
+		{
+			if(inventarioApi.HasItem("FinalRoomKey")){
+				inventarioApi.UseItem("FinalRoomKey");
+				Destroy(col.gameObject);
+			}
 		}
 	}
 }
