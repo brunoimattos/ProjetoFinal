@@ -22,7 +22,9 @@ public class ResourceManager : MonoBehaviour {
 	public List<Transform> traps_0101;
 	public List<Transform> traps_1011;
 	public List<Transform> traps_0111;
-
+	
+	public List<Transform> keys;
+	
 	private Dictionary<string, List<Transform>> TrapSet;
 	private Dictionary<string, string> FlipMapping;
 		
@@ -32,6 +34,8 @@ public class ResourceManager : MonoBehaviour {
 		if(InitialRooms == null) Debug.LogError("There are no InitialRoom Prefabs assigned to the Room Manager!");
 		if(FinalRooms == null) Debug.LogError("There are no FinalRoom Prefabs assigned to the Room Manager!");
 		if(FinalRoomDoor == null) Debug.LogError("There is no FinalRoomDoor Prefab assigned to the Room Manager!");
+		if(keys == null) Debug.LogError("There is no key Prefab assigned to the Room Manager!");
+		
 
 		/* Dicionario que relaciona uma configuraçao de porta com as traps criadas para aquela configuraçao. */
 		TrapSet = new Dictionary<string, List<Transform>>();
@@ -135,5 +139,17 @@ public class ResourceManager : MonoBehaviour {
 	public Texture2D getTextureByIndex(int idx)
 	{
 		return Textures[idx];
+	}
+	
+	public Transform GetKeyByName(string keyName)
+	{
+		foreach(Transform key in keys)
+		{
+			if(key.name == keyName)
+				return key;
+			
+		}
+		
+		return null;
 	}
 }
