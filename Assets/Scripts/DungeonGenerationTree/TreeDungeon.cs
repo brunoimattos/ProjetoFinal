@@ -48,9 +48,18 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	
 	void Update () 
 	{
-		if(Input.GetKeyDown(KeyCode.R))
+		if(Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Menu))
 		{
 			RegenerateDungeon();	
+		}
+		
+		if (Input.GetKeyDown(KeyCode.Menu)){
+			//showMapAndStats();
+			
+		}
+		
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			Application.Quit();
 		}
 	}
 	
