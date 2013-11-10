@@ -43,6 +43,10 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 	
+	public void setLerping(bool booleanValue){
+		isLerping = booleanValue;
+	}
+	
 	void doPCMovement()
 	{
 		//Movimento com setas.
@@ -64,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 			
 			Vector3 realWorldPosition;
 			
-			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) * confusion;
 			realWorldPosition.y = this.transform.position.y;
 			lerpFromPosition = this.transform.position;
 			lerpToPosition = realWorldPosition;
@@ -101,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
 			
 			Vector3 realWorldPosition;
 			
-			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) * confusion;
 			realWorldPosition.y = this.transform.position.y;
 			lerpFromPosition = this.transform.position;
 			lerpToPosition = realWorldPosition;
@@ -124,6 +128,10 @@ public class PlayerMovement : MonoBehaviour
 		else
 		{
 			this.confusion = 1;
+		}
+		
+		if (isLerping){
+			lerpToPosition = new Vector3 (lerpToPosition.x * -1, lerpToPosition.y, lerpToPosition.z * -1);
 		}
 	}
 	

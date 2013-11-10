@@ -32,7 +32,7 @@ public class DoorTrigger : MonoBehaviour
 		if (other.CompareTag("Player"))
 		{
 			roomHasChanged = true;
-			playerMovement.isLerping = false;
+			playerMovement.setLerping(false);
 			Vector3 nextRoomPosition = Vector3.zero;
 			Vector3 nextPlayerPosition = Vector3.zero;
 			currentRoom = transform.parent.GetComponent<GameRoom>().room;

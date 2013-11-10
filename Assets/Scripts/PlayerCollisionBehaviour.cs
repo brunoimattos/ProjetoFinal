@@ -4,10 +4,13 @@ using System.Collections;
 public class PlayerCollisionBehaviour : MonoBehaviour
 {
 	Inventory inventarioApi;
+	private PlayerMovement playerMovement;
 	
 	void Start()
 	{
 		inventarioApi = transform.gameObject.GetComponent<Inventory>();
+		
+		playerMovement = transform.gameObject.GetComponent<PlayerMovement>();
 		
 		if(inventarioApi == null)
 			Debug.Log("");
@@ -16,43 +19,57 @@ public class PlayerCollisionBehaviour : MonoBehaviour
 	
 	void OnCollisionEnter(Collision col)
 	{	
-		Debug.Log("Col tag: " + col.gameObject.tag);
-		
-		/* The logic behind the player's collision. */
-		if(col.gameObject.CompareTag("Trap"))
-		{
-			if(Application.loadedLevelName == "TrapsWorkshop"){
-				Application.LoadLevel("TrapsWorkshop");	
-			}
-			else{
-				Application.LoadLevel("LevelGeneration");	
-			}
-			
-			Debug.Log("LOL, I'm dead!");	
+		switch (col.gameObject.tag) {
+		case "Trap":
+			handleTrapCollision();
+			break;
+		case "ConfuseGas":
+			handleConfuseGasCollision(col);
+			break;
+		case "Key":
+			handleKeyCollision(col);
+			break;
+		case "FinalDoor":
+			handleFinalDoorCollision(col);
+			break;
+		default:
+			playerMovement.setLerping(false);
+			break;
 		}
+	}
+	
+	private void handleTrapCollision(){
+		playerMovement.setLerping(false);
+		if(Application.loadedLevelName == "TrapsWorkshop"){
+			Application.LoadLevel("TrapsWorkshop");	
+		}
+		else{
+			Application.LoadLevel("LevelGeneration");	
+		}
+	}
+	
+	private void handleConfuseGasCollision(Collision col){
 		
-		if(col.gameObject.CompareTag("ConfuseGas"))
-		{
-			Destroy(col.gameObject);
+		Destroy(col.gameObject);
 
-			if (GetComponent<ConfusionGasEffect>() == null)
-			{
-				gameObject.AddComponent("ConfusionGasEffect");
-			}
-		}
-		
-		if(col.gameObject.CompareTag("Key"))
+		if (GetComponent<ConfusionGasEffect>() == null)
 		{
-			inventarioApi.AddItem(col.gameObject.name);
+			gameObject.AddComponent("ConfusionGasEffect");
+		}
+	}
+	
+	private void handleKeyCollision(Collision col){
+		playerMovement.setLerping(false);
+		inventarioApi.AddItem(col.gameObject.name);
+		Destroy(col.gameObject);
+		
+	}
+	
+	private void handleFinalDoorCollision(Collision col){
+		playerMovement.setLerping(false);
+		if(inventarioApi.HasItem("FinalRoomKey")){
+			inventarioApi.UseItem("FinalRoomKey");
 			Destroy(col.gameObject);
-		}
-		
-		if(col.gameObject.CompareTag("FinalDoor"))
-		{
-			if(inventarioApi.HasItem("FinalRoomKey")){
-				inventarioApi.UseItem("FinalRoomKey");
-				Destroy(col.gameObject);
-			}
 		}
 	}
 }
