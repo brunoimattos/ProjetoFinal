@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
 	private delegate void DoMovement();
 	private DoMovement doMovement;
 	
+	private Vector3 realWorldPosition;
+	
 	public float confusion_cooldown;
 	
 	private int confusion = 1;
@@ -15,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 	void Start()
 	{
 		#if UNITY_ANDROID
-			doMovement += doAndroidMovement;			
+			doMovement += doAndroidMovement;		
 		#endif
 		
 		#if UNITY_EDITOR
@@ -47,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 	
 	void doAndroidMovement()
 	{
-		if (Input.touchCount > 0)
+		/*if (Input.touchCount > 0)
 		{
 			if (Input.GetTouch(0).phase == TouchPhase.Moved)
 			{
@@ -62,7 +65,13 @@ public class PlayerMovement : MonoBehaviour
 		{
 			touchDeltaPosition.x = 0.0f;			
 			touchDeltaPosition.y = 0.0f;			
+		}*/
+		
+		if (Input.touchCount > 0){
+			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+			//moveTo(realWorldPosition);
 		}
+		
 	}
 	
 	public void setConfusion(bool confused)
