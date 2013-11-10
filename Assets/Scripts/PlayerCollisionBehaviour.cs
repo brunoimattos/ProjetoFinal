@@ -49,7 +49,6 @@ public class PlayerCollisionBehaviour : MonoBehaviour
 	}
 	
 	private void handleConfuseGasCollision(Collision col){
-		
 		Destroy(col.gameObject);
 
 		if (GetComponent<ConfusionGasEffect>() == null)
@@ -59,6 +58,7 @@ public class PlayerCollisionBehaviour : MonoBehaviour
 	}
 	
 	private void handleKeyCollision(Collision col){
+
 		playerMovement.setLerping(false);
 		inventarioApi.AddItem(col.gameObject.name);
 		Destroy(col.gameObject);
