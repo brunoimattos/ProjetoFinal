@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
 	
 	public float confusion_cooldown;
 	
-	private int confusion = 1;
+	private float confusion = 1.0f;
 	
 	void Start()
 	{
@@ -68,8 +68,15 @@ public class PlayerMovement : MonoBehaviour
 			
 			Vector3 realWorldPosition;
 			
-			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition) * confusion;
+			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			
+			
+			if(confusion == -1.0f){
+				realWorldPosition += -2*(realWorldPosition - this.transform.position);
+			}
+			
 			realWorldPosition.y = this.transform.position.y;
+			
 			lerpFromPosition = this.transform.position;
 			lerpToPosition = realWorldPosition;
 			startLerpTime = Time.time;
@@ -104,8 +111,12 @@ public class PlayerMovement : MonoBehaviour
 		if (Input.touchCount > 0){
 			
 			Vector3 realWorldPosition;
+			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 			
-			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position) * confusion;
+			if(confusion == -1.0f){
+				realWorldPosition += -2*(realWorldPosition - this.transform.position);
+			}
+			
 			realWorldPosition.y = this.transform.position.y;
 			lerpFromPosition = this.transform.position;
 			lerpToPosition = realWorldPosition;
@@ -123,16 +134,14 @@ public class PlayerMovement : MonoBehaviour
 	{
 		if(confused)
 		{
-			this.confusion = -1;
+			this.confusion = -1.0f;
 		}
 		else
 		{
-			this.confusion = 1;
+			this.confusion = 1.0f;
 		}
 		
-		if (isLerping){
-			lerpToPosition = new Vector3 (lerpToPosition.x * -1, lerpToPosition.y, lerpToPosition.z * -1);
-		}
+		
 	}
 	
 	public void MovePlayer()
@@ -140,7 +149,7 @@ public class PlayerMovement : MonoBehaviour
 		float distCovered = (Time.time - startLerpTime) * playerSpeed;
 		float fracJourney = distCovered / lerpJourneyLength;
 		this.transform.position = Vector3.Lerp(lerpFromPosition, lerpToPosition, fracJourney);
-		if (fracJourney == 1.0f){
+		if (fracJourney >= 1.0f){
 			isLerping = false;
 		}
     }

@@ -50,7 +50,7 @@ public class PlayerCollisionBehaviour : MonoBehaviour
 	
 	private void handleConfuseGasCollision(Collision col){
 		Destroy(col.gameObject);
-
+		playerMovement.setLerping(false);
 		if (GetComponent<ConfusionGasEffect>() == null)
 		{
 			gameObject.AddComponent("ConfusionGasEffect");

@@ -29,14 +29,11 @@ public class ConfusionGasEffect : MonoBehaviour
 		ResourceManager resourceApi = GameObject.FindGameObjectWithTag("ResourceManager").GetComponent<ResourceManager>();
 		
 		confuseEffect = resourceApi.getTextureByName("confuse_gas_effect");
-		
-		Debug.Log("Texturaaaa: " + confuseEffect.name);
-		
+				
 		alpha = GUI.color.a;
 		
 		// Agora nao me pergunte pq o confuseTime ao quadrado =P
 		alphaDecrease = ( alpha / (confuseTime * confuseTime ) ) * Time.deltaTime;
-		Debug.Log("Decrease: " + alphaDecrease);
 		
 		StartCoroutine(doConfusion(confuseTime, playerApi));
 	}
