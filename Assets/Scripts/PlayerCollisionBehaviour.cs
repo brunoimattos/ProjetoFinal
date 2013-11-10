@@ -3,6 +3,17 @@ using System.Collections;
 
 public class PlayerCollisionBehaviour : MonoBehaviour
 {
+	Inventory inventarioApi;
+	
+	void Start()
+	{
+		inventarioApi = transform.gameObject.GetComponent<Inventory>();
+		
+		if(inventarioApi == null)
+			Debug.Log("");
+	}
+	
+	
 	void OnCollisionEnter(Collision col)
 	{	
 		/* The logic behind the player's collision. */
@@ -26,6 +37,12 @@ public class PlayerCollisionBehaviour : MonoBehaviour
 			{
 				gameObject.AddComponent("ConfusionGasEffect");
 			}
+		}
+		
+		if(col.gameObject.CompareTag("Key"))
+		{
+			inventarioApi.AddItem(col.gameObject.name);
+			Destroy(col.gameObject);
 		}
 	}
 }
