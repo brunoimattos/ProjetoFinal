@@ -165,12 +165,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			
 			Transform g = GameObject.Instantiate(instRoom, new Vector3(room.worldX,0,room.worldZ),Quaternion.identity) as Transform;
 			room.setRoomTransform(g);
-			
-			if(!room.HasChildren() && finalRoomCreated)
-			{
-				leafRooms.Add(room);
-			}
-			
+						
 			// Add the room info to the GameObject main script
 			GameRoom gameRoom = g.gameObject.GetComponent<GameRoom>();
 
@@ -188,6 +183,11 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 			}
 			
 			g.name = room.getName();
+			
+			if(!room.HasChildren() && !g.CompareTag("FinalRoom"))
+			{
+				leafRooms.Add(room);
+			}
 		}
 	}
 	
