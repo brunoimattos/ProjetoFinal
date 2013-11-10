@@ -9,7 +9,11 @@ public class PlayerMovement : MonoBehaviour
 	private delegate void DoMovement();
 	private DoMovement doMovement;
 	
-	private Vector3 realWorldPosition;
+	private Vector3 lerpFromPosition;
+	private Vector3 lerpToPosition;
+	private float startLerpTime;
+	private float lerpJourneyLength;
+	public bool isLerping;
 	
 	public float confusion_cooldown;
 	
@@ -18,12 +22,16 @@ public class PlayerMovement : MonoBehaviour
 	void Start()
 	{
 		#if UNITY_ANDROID
-			doMovement += doAndroidMovement;		
+			doMovement += doAndroidMovement;	
+
 		#endif
 		
 		#if UNITY_EDITOR
 			doMovement += doPCMovement;
 		#endif
+		
+		lerpFromPosition = this.transform.position;
+		lerpToPosition = this.transform.position;
 	}
 
 
@@ -37,15 +45,37 @@ public class PlayerMovement : MonoBehaviour
 	
 	void doPCMovement()
 	{
-		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+		//Movimento com setas.
+		
+		/*Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 		
 		if(movement.magnitude > 1.0f){
 			movement.Normalize();
 		}
 		
 		this.transform.Translate(movement * confusion * playerSpeed * Time.deltaTime);
+		*/
 		
 		//this.rigidbody.AddForce( this.transform.position + (movement * playerSpeed * Time.deltaTime));
+		
+		// Movimento com clique do mouse.
+		
+		if (Input.GetMouseButton(0)){
+			
+			Vector3 realWorldPosition;
+			
+			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			realWorldPosition.y = this.transform.position.y;
+			lerpFromPosition = this.transform.position;
+			lerpToPosition = realWorldPosition;
+			startLerpTime = Time.time;
+			lerpJourneyLength = Vector3.Distance(lerpFromPosition, lerpToPosition);
+			isLerping = true;
+		}
+		
+		if (isLerping){
+			MovePlayer();
+		}
 	}
 	
 	void doAndroidMovement()
@@ -68,10 +98,21 @@ public class PlayerMovement : MonoBehaviour
 		}*/
 		
 		if (Input.touchCount > 0){
+			
+			Vector3 realWorldPosition;
+			
 			realWorldPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-			//moveTo(realWorldPosition);
+			realWorldPosition.y = this.transform.position.y;
+			lerpFromPosition = this.transform.position;
+			lerpToPosition = realWorldPosition;
+			startLerpTime = Time.time;
+			lerpJourneyLength = Vector3.Distance(lerpFromPosition, lerpToPosition);
+			isLerping = true;
 		}
 		
+		if (isLerping){
+			MovePlayer();
+		}
 	}
 	
 	public void setConfusion(bool confused)
@@ -85,6 +126,16 @@ public class PlayerMovement : MonoBehaviour
 			this.confusion = 1;
 		}
 	}
+	
+	public void MovePlayer()
+    {
+		float distCovered = (Time.time - startLerpTime) * playerSpeed;
+		float fracJourney = distCovered / lerpJourneyLength;
+		this.transform.position = Vector3.Lerp(lerpFromPosition, lerpToPosition, fracJourney);
+		if (fracJourney == 1.0f){
+			isLerping = false;
+		}
+    }
 	
 	public void snapToPosition(Vector3 toPosition)
 	{

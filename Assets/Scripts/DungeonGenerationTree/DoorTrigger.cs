@@ -7,11 +7,13 @@ public class DoorTrigger : MonoBehaviour
 	private bool roomHasChanged;
 	private Room currentRoom;
 	private CameraBehaviour cameraBehaviour;
+	private PlayerMovement playerMovement;
 	
 	void Start()
 	{
 		roomFloor =  transform.parent.FindChild("RoomFloor");
 		cameraBehaviour = Camera.main.GetComponent<CameraBehaviour>();
+		playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
 		currentRoom = null;
 		roomHasChanged = false;
 	}
@@ -29,8 +31,8 @@ public class DoorTrigger : MonoBehaviour
 	{
 		if (other.CompareTag("Player"))
 		{
-			Debug.Log("Door has been hit.");
 			roomHasChanged = true;
+			playerMovement.isLerping = false;
 			Vector3 nextRoomPosition = Vector3.zero;
 			Vector3 nextPlayerPosition = Vector3.zero;
 			currentRoom = transform.parent.GetComponent<GameRoom>().room;
