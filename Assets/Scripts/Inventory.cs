@@ -19,9 +19,11 @@ public class Inventory : MonoBehaviour {
 	
 	public void AddItem(string name){
 		items.Add(name);
-		
-		Debug.Log("Items in inventory: ");
-		foreach(string item in items)
-			Debug.Log(item);
+	}
+	
+	public void UseItem(string name){
+		if(items.Contains(name)){
+			items.Remove(name);
+		}
 	}
 }
