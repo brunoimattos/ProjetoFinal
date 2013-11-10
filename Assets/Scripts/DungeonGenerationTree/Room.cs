@@ -29,6 +29,10 @@ public class Room
 		roomTransform = transform;
 	}
 	
+	public Transform getRoomKeyTransform(){
+		return roomTransform.Find("Traps").Find("TrapConfig").Find("KeyPosition");
+	}
+	
 	public void setActiveTrap(bool active)
 	{
 		Transform traps = roomTransform.Find("Traps");
