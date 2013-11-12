@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
 	private float lerpJourneyLength;
 	public bool isLerping;
 	
+	private Vector2 inicialTouchPosition;
+	
 	public float confusion_cooldown;
 	
 	private float confusion = 1.0f;
@@ -23,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		#if UNITY_ANDROID
 			doMovement += doAndroidMovement;	
+			inicialTouchPosition = Vector2.zero;
 
 		#endif
 		
@@ -62,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		//this.rigidbody.AddForce( this.transform.position + (movement * playerSpeed * Time.deltaTime));
 		
+		
 		// Movimento com clique do mouse.
 		
 		if (Input.GetMouseButton(0)){
@@ -91,23 +95,29 @@ public class PlayerMovement : MonoBehaviour
 	
 	void doAndroidMovement()
 	{
-		/*if (Input.touchCount > 0)
+		// Movimento com analogico.
+		if (Input.touchCount > 0)
 		{
-			if (Input.GetTouch(0).phase == TouchPhase.Moved)
-			{
-				touchDeltaPosition -= Input.GetTouch(0).deltaPosition;
-				touchDeltaPosition.Normalize();
-			}
+			inicialTouchPosition += Input.GetTouch(0).deltaPosition;
 			
-			this.transform.Translate(-touchDeltaPosition.x * playerSpeed * Time.deltaTime, 0, -touchDeltaPosition.y * playerSpeed * Time.deltaTime);
+			if (inicialTouchPosition.magnitude > 10.0f)
+				inicialTouchPosition = inicialTouchPosition.normalized * 10.0f;
+			
+			float deadzone = 3.0f;
+			
+			if(inicialTouchPosition.magnitude > deadzone)
+			{
+				Vector2 stickInput = inicialTouchPosition.normalized * ((inicialTouchPosition.magnitude - deadzone) / (1 - deadzone));
+				this.transform.Translate(-stickInput.x * playerSpeed * Time.deltaTime, 0, -stickInput.y * playerSpeed * Time.deltaTime);
+			}
+		}
+		else
+		{
+			inicialTouchPosition = Vector2.zero;
 		}
 		
-		if (Input.touchCount == 0)
-		{
-			touchDeltaPosition.x = 0.0f;			
-			touchDeltaPosition.y = 0.0f;			
-		}*/
-		
+		// Movimento com toque.
+		/*
 		if (Input.touchCount > 0){
 			
 			Vector3 realWorldPosition;
@@ -127,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
 		
 		if (isLerping){
 			MovePlayer();
-		}
+		}*/
 	}
 	
 	public void setConfusion(bool confused)
