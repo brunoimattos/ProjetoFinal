@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 	public float confusion_cooldown;	
 	private float confusion = 1.0f;
 	
-	private float playerSpeed;
+	public float playerSpeed;
 	
 	private delegate void DoMovement();
 	private DoMovement doMovement;
@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 		#if UNITY_ANDROID
 			doMovement += doAndroidMovement;	
 			inicialTouchPosition = Vector2.zero;
-			playerSpeed = 1.8f;
+			playerSpeed = 10.0f;
 
 		#endif
 		
@@ -143,15 +143,16 @@ public class PlayerMovement : MonoBehaviour
 		{
 			inicialTouchPosition += Input.GetTouch(0).deltaPosition;
 			
-			if (inicialTouchPosition.magnitude > 10.0f)
-				inicialTouchPosition = inicialTouchPosition.normalized * 10.0f;
+			float deadzone = 5.0f;
+			float maxRange = deadzone * 4;
 			
-			float deadzone = 3.0f;
+			if (inicialTouchPosition.magnitude > maxRange)
+					inicialTouchPosition = inicialTouchPosition.normalized * maxRange;
 			
 			if(inicialTouchPosition.magnitude > deadzone)
 			{
-				Vector2 stickInput = inicialTouchPosition.normalized * ((inicialTouchPosition.magnitude - deadzone) / (1 - deadzone));
-				this.transform.Translate(-stickInput.x * playerSpeed * Time.deltaTime, 0, -stickInput.y * playerSpeed * Time.deltaTime);
+				Vector2 stickInput = inicialTouchPosition.normalized * ((inicialTouchPosition.magnitude - deadzone) / (maxRange - deadzone));
+				this.transform.Translate(stickInput.x * playerSpeed * Time.deltaTime, 0, stickInput.y * playerSpeed * Time.deltaTime);
 				}
 		}
 		else
