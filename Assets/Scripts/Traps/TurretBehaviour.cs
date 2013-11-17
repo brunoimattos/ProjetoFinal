@@ -111,12 +111,10 @@ public class TurretBehaviour : MonoBehaviour
 		if(can_shoot)
 		{
 			can_move = false;
-			Debug.Log("Pew!");
 			blast = GameObject.Instantiate(laser_blast, turret_muzzle.position, Quaternion.identity) as Transform;
 			
 			foreach(Transform child in transform)
 			{
-				Debug.Log("CHild name: " + child.name);
 				Physics.IgnoreCollision(child.collider, blast.collider);
 			}
 
