@@ -55,6 +55,18 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 		StartCoroutine(timed_bursts(burst_mode, burst_cooldown));
 	}
 	
+	void OnDisable()
+	{
+		foreach(Transform particle in transform){
+			if(particle.CompareTag("ConfuseGas")){
+				Destroy(particle.gameObject);
+				//particle.GetComponent<EmittedParticleBehaviour>().SendToPool();
+			}
+			
+			
+		}
+	}
+	
 	public IEnumerator timed_bursts(bool is_burst, float cooldown)
 	{
 		while(is_burst)
@@ -68,6 +80,7 @@ public class ParticleEmissionBehaviour : MonoBehaviour {
 	{
 		for(int i=0; i < particle_count; i++)
 		{
+			Debug.Log("Na hora de emitir existem: "+ obj_pool_api.particle_count + " particulas no pool.");
 			if(obj_pool_api.particle_count > 0)
 			{
 				inst_particle = obj_pool_api.get_particle_from_pool();
