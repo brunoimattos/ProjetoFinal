@@ -4,7 +4,9 @@
 
 Library/
 Temp/
+Assets/NGUI/
 
+Assets/NGUI.meta
 Assembly-CSharp-Editor-firstpass-vs.csproj
 Assembly-CSharp-Editor-firstpass.csproj
 Assembly-CSharp-Editor-firstpass.pidb

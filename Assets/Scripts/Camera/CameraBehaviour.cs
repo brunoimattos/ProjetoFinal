@@ -14,7 +14,7 @@ public class CameraBehaviour : MonoBehaviour {
 	
 	void Start()
 	{
-		
+		Screen.SetResolution(1280, 800, true);
 		if (lerpSpeed < 0.0f)
 			Debug.Log("LerpSpeed not set.");
 	}
