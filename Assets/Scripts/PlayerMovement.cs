@@ -152,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
 			if(inicialTouchPosition.magnitude > deadzone)
 			{
 				Vector2 stickInput = inicialTouchPosition.normalized * ((inicialTouchPosition.magnitude - deadzone) / (maxRange - deadzone));
-				this.transform.Translate(stickInput.x * playerSpeed * Time.deltaTime, 0, stickInput.y * playerSpeed * Time.deltaTime);
+				this.transform.Translate(stickInput.x * playerSpeed * confusion * Time.deltaTime, 0, stickInput.y * playerSpeed * confusion * Time.deltaTime);
 				}
 		}
 		else
