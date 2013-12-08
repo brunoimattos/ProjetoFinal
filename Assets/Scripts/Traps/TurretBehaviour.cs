@@ -79,7 +79,8 @@ public class TurretBehaviour : MonoBehaviour
 
 	void OnDisable(){
 		foreach(GameObject bullet in GameObject.FindGameObjectsWithTag("Trap")){
-			Destroy(bullet);
+			if(bullet.name == "turret_blast")
+				Destroy(bullet);
 		}
 	}
 
@@ -112,18 +113,18 @@ public class TurretBehaviour : MonoBehaviour
 		if(can_shoot)
 		{
 			can_move = false;
-			Debug.Log("Pew!");
 			blast = GameObject.Instantiate(laser_blast, turret_muzzle.position, Quaternion.identity) as Transform;
 			
 			foreach(Transform child in transform)
 			{
-				Debug.Log("CHild name: " + child.name);
 				Physics.IgnoreCollision(child.collider, blast.collider);
 			}
 
 			blast.gameObject.rigidbody.velocity = turret_muzzle.transform.forward * shot_speed;
 			blast.GetComponent<TurretLaserBehaviour>().setOrigin(turret_muzzle.transform.position);
 			can_shoot = false;
+			blast.name = "turret_blast";
+			blast.parent = transform.parent;
 			
 			StartCoroutine(doCooldown(reload_cooldown));		
 		}
