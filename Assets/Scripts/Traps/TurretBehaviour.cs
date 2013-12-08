@@ -85,6 +85,12 @@ public class TurretBehaviour : MonoBehaviour
 	}
 
 	
+	void OnDisable(){
+		foreach(GameObject bullet in GameObject.FindGameObjectsWithTag("Trap")){
+			Destroy(bullet);
+		}	
+	}
+	
 	IEnumerator doCooldown(float cooldownTime)
 	{
 		yield return new WaitForSeconds(cooldownTime);
