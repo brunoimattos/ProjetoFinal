@@ -10,6 +10,7 @@ public class ThrowObjectBehaviour : MonoBehaviour {
 	
 	private Vector3 throw_direction;
 	private Transform throwable_instantiated;
+	private bool isRunning;
 	
 	void Start () {
 		if(throwable_object == null)
@@ -34,22 +35,41 @@ public class ThrowObjectBehaviour : MonoBehaviour {
 		
 		throw_direction = (object_receiver.transform.position - this.transform.position).normalized;
 		
-		StartCoroutine(throw_object(throw_interval, throw_speed, throw_direction));	
+		//StartCoroutine(throw_object(throw_interval, throw_speed, throw_direction));	
+		StartCoroutine ("throw_object");
 		
+		isRunning = true;
 		
 		//throw_object(throw_interval, throw_speed, throw_direction);
 	}
 	
-	IEnumerator throw_object(float throw_interval, float throw_speed, Vector3 throw_direction)
+	//IEnumerator throw_object(float throw_interval, float throw_speed, Vector3 throw_direction)
+	IEnumerator throw_object()
 	{
 		while(true){
 			throwable_instantiated = GameObject.Instantiate(throwable_object ,this.transform.position, Quaternion.identity) as Transform;
+			throwable_instantiated.name = "throwable_saw";
 			Physics.IgnoreCollision(throwable_instantiated.collider, this.collider);
 			throwable_instantiated.parent = this.gameObject.transform;
-			throwable_instantiated.GetComponent<ThrowableObjectBehaviour>().throw_object(throw_speed * throw_direction);
-			yield return new WaitForSeconds(throw_interval);		
+			throwable_instantiated.GetComponent<ThrowableObjectBehaviour>().throw_object(this.throw_speed * this.throw_direction);
+			yield return new WaitForSeconds(this.throw_interval);
 		}
 		
+	}
+	
+	void OnEnable()
+	{	
+		if(isRunning == false)
+			StartCoroutine("throw_object");	
+		else
+			Debug.Log("Ja estava rodando!");
+	}
+	
+	void OnDisable()
+	{
+		//StopCoroutine("throw_object");
+		StopAllCoroutines();
+		isRunning = false;
 	}
 	
 	
