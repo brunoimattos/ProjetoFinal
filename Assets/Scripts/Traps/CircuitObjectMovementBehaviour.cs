@@ -28,6 +28,12 @@ public class CircuitObjectMovementBehaviour : MonoBehaviour {
 		current_idx = circuit_manager_api.get_starting_index(start_node);
 		movement_direction = circuit_manager_api.get_movement_direction(current_idx);
 	}
+		
+	void OnEnable(){
+		this.transform.position = start_node.position;
+		current_idx = circuit_manager_api.get_starting_index(start_node);
+		movement_direction = circuit_manager_api.get_movement_direction(current_idx);
+	}
 	
 	
 	void LateUpdate()
