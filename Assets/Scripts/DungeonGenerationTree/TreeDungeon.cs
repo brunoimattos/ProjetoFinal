@@ -7,6 +7,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	// Dungeon Rooms
 	public int DUNGEON_SIZE_X = 10;
 	public int DUNGEON_SIZE_Y = 10;
+	public int MAX_TRIES = 2;
 	
 	// Size of 3D Model Prefab in World Space
 	public int ROOM_SIZE_X = 14; 
@@ -32,6 +33,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	public void OnGenerateClick(int X, int Y, int MAX_TRIES){
 		this.DUNGEON_SIZE_X = X;
 		this.DUNGEON_SIZE_Y = Y;
+		this.MAX_TRIES = MAX_TRIES;
 		RegenerateDungeon();
 	}
 	
@@ -102,6 +104,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	
 	public void GenerateLevel()
 	{		
+		Room.MAX_TRIES = this.MAX_TRIES;
 		GenerateDungeon();
 		GenerateGameRooms();
 		
@@ -109,8 +112,6 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		Transform finalRoomDoor = resourceApi.GetFinalRoomDoor();
 		Vector3 finalRoomDoorPosition = Vector3.zero;
 		Vector3 finalRoomDoorRotation = Vector3.zero;
-		
-		
 		
 		if (finalGameRoom.room.IsConnectedTo(finalGameRoom.room.GetTop()))
 		{
@@ -155,6 +156,8 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		int roomY = Random.Range (0, DUNGEON_SIZE_Y);
 		
 		Room firstRoom = AddRoom(null, roomX,roomY, ROOM_SIZE_X, ROOM_SIZE_Z); // null parent (first node)
+		
+		this.meanPosition = Vector2.zero;
 		
 		addToMeanPosition(roomX, roomY);
 		
