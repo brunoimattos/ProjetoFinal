@@ -11,7 +11,7 @@ public class Room
 	private TreeDungeon dungeon;
 	private string name;
 	
-	private static int MAX_TRIES = 2;
+	public static int MAX_TRIES = 2;
 	
 	public Room(Room _parent, int _x, int _y, float _width, float _height)
 	{
