@@ -24,8 +24,27 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 	private ResourceManager resourceApi;
 	
 	private List<Room> leafRooms;
+	
+	private Vector2 meanPosition;
 
 	private GameObject marty;
+	
+	public void OnGenerateClick(int X, int Y, int MAX_TRIES){
+		this.DUNGEON_SIZE_X = X;
+		this.DUNGEON_SIZE_Y = Y;
+		RegenerateDungeon();
+	}
+	
+	public Vector2 getMeanDungeonPosition(){
+		if(nRooms != 0)
+			return new Vector2(meanPosition.x * ROOM_SIZE_X / nRooms, meanPosition.y * ROOM_SIZE_Z / nRooms);
+		else
+			return new Vector2(initialRoom.transform.position.x, initialRoom.transform.position.z);
+	}
+	
+	private void addToMeanPosition(int x, int y){
+		this.meanPosition += new Vector2(x, y);
+	}
 	
 	public override void Init () 
 	{
@@ -34,16 +53,20 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		marty = GameObject.FindGameObjectWithTag("Player");
 
 		leafRooms = new List<Room>();
-
+		
+		meanPosition = Vector2.zero;
+		
 		GenerateLevel();
 	}
 	
 	void setPlayerAndCamera()
 	{
-		Camera.main.transform.position = new Vector3(initialRoom.transform.position.x, 10.0f, initialRoom.transform.position.z);
+		Vector2 cameraPosition = getMeanDungeonPosition();
+		//Camera.main.transform.position = new Vector3(initialRoom.transform.position.x, 10.0f, initialRoom.transform.position.z);
+		Camera.main.transform.position = new Vector3(cameraPosition.x, 10.0f, cameraPosition.y);
 		
 		//FIXME: Tirar o hard coded.
-		marty.transform.position = new Vector3(initialRoom.transform.position.x, initialRoom.transform.position.y + 0.9f, initialRoom.transform.position.z);
+		//marty.transform.position = new Vector3(initialRoom.transform.position.x, initialRoom.transform.position.y + 0.9f, initialRoom.transform.position.z);
 	}
 	
 	void Update () 
@@ -133,6 +156,8 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		
 		Room firstRoom = AddRoom(null, roomX,roomY, ROOM_SIZE_X, ROOM_SIZE_Z); // null parent (first node)
 		
+		addToMeanPosition(roomX, roomY);
+		
 		// Generate childrens
 		firstRoom.GenerateChildren();
 		
@@ -141,6 +166,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		if((nRooms < 5) || (nRooms > (int)(0.8f * DUNGEON_SIZE_X * DUNGEON_SIZE_Y)))
 		{
 			nRooms = 0;
+			meanPosition = Vector2.zero;
 			GenerateDungeon();
 		}
 			
@@ -257,6 +283,8 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		Room room = new Room(parent, x, y, width, height);
 		rooms[x,y] = room;
 		nRooms++;
+		
+		addToMeanPosition(x, y);
 		return room;
 	}	
 
