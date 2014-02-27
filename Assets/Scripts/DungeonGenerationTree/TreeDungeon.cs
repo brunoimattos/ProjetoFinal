@@ -59,7 +59,7 @@ public class TreeDungeon : MonoSingleton<TreeDungeon>
 		}
 		
 		if (Input.GetKeyDown(KeyCode.Escape)){
-			Application.Quit();
+			Application.LoadLevel("MartyMainMenu");
 		}
 	}
 	

@@ -35,4 +35,10 @@ public class MainMenu : MonoBehaviour {
 		NGUITools.SetActive(optionsPanelObject, false);
 		NGUITools.SetActive(mainPanelObject, true);	
 	}
+	
+	void Update() {
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			Application.Quit();
+		}
+	}
 }
